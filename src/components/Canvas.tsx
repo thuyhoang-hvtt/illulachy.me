@@ -3,6 +3,7 @@ import { Tldraw, Editor } from 'tldraw'
 import 'tldraw/tldraw.css'
 import { CanvasLoader } from './CanvasLoader'
 import { CanvasControls } from './CanvasControls'
+import { CanvasFogOverlay } from './CanvasFogOverlay'
 import { useCameraState } from '@/hooks/useCameraState'
 import { useArrowKeyNavigation } from '@/hooks/useArrowKeyNavigation'
 import { useControlsVisibility } from '@/hooks/useControlsVisibility'
@@ -42,6 +43,8 @@ export function Canvas() {
       >
         <Tldraw hideUi onMount={handleMount} />
       </div>
+      {/* Fog overlay (above canvas, below controls) */}
+      <CanvasFogOverlay />
       {/* Controls with contextual visibility */}
       <CanvasControls editor={editorRef.current} visible={isReady && visible} />
     </>
