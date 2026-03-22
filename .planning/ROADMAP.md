@@ -27,10 +27,10 @@
   4. User can navigate using arrow keys to move viewport
   5. Canvas maintains 60 FPS during all interactions (measured with Chrome DevTools)
   6. Canvas displays loading spinner while initializing before first paint
-**Plans:** 1 plan (01-PLAN.md)
+**Plans:** 1 plan (01-PLAN.md) — 4 waves, 14 tasks
 
 Plans:
-- [ ] 01-PLAN.md — 4 waves: Setup & Validation → Core Canvas → Controls & Polish → Integration & Verification
+- [ ] 01-PLAN.md — Wave 0: Setup & Validation (3 tasks) → Wave 1: Core Canvas (4 tasks) → Wave 2: Controls & Polish (3 tasks) → Wave 3: Integration & Verification (4 tasks)
 
 ### Phase 2: Content Pipeline
 **Goal:** Content is authored in markdown and bundled as JSON at build time  
@@ -97,7 +97,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Canvas Foundation | 0/1 | Planned | - |
+| 1. Canvas Foundation | 0/1 | Ready | - |
 | 2. Content Pipeline | 0/0 | Not started | - |
 | 3. Custom Shapes & Hub | 0/0 | Not started | - |
 | 4. Timeline Layout | 0/0 | Not started | - |
