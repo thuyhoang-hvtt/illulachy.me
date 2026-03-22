@@ -407,3 +407,39 @@ code {
 .rounded-lg {
   border-radius: var(--radius-lg);
 }
+
+.rounded-xl {
+  border-radius: var(--radius-xl);
+}
+
+.bottom-4 {
+  bottom: 1rem;
+}
+
+.right-4 {
+  right: 1rem;
+}
+
+.gap-2 {
+  gap: var(--spacing-2);
+}
+
+.p-3 {
+  padding: var(--spacing-3);
+}
+
+.w-10 {
+  width: 2.5rem;
+}
+
+.h-10 {
+  height: 2.5rem;
+}
+
+.text-lg {
+  font-size: var(--text-lg);
+}
+
+.font-medium {
+  font-weight: var(--font-weight-medium);
+}

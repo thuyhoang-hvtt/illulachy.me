@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import { Tldraw, Editor } from 'tldraw'
 import 'tldraw/tldraw.css'
 import { CanvasLoader } from './CanvasLoader'
+import { CanvasControls } from './CanvasControls'
 import { useCameraState } from '@/hooks/useCameraState'
 import { useArrowKeyNavigation } from '@/hooks/useArrowKeyNavigation'
 
@@ -37,6 +38,8 @@ export function Canvas() {
       >
         <Tldraw hideUi onMount={handleMount} />
       </div>
+      {/* Controls always visible for now (Wave 2 Task 2 will add contextual visibility) */}
+      <CanvasControls editor={editorRef.current} visible={isReady} />
     </>
   )
 }

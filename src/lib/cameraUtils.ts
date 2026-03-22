@@ -21,7 +21,11 @@ export function calculateInitialZoom(viewport: ViewportDimensions): number {
 /**
  * Get current viewport dimensions
  */
-export function getViewportDimensions(): ViewportDimensions {
+export function getViewportDimensions(editor?: any): ViewportDimensions {
+  if (editor) {
+    const bounds = editor.getViewportScreenBounds()
+    return { width: bounds.width, height: bounds.height }
+  }
   return {
     width: window.innerWidth,
     height: window.innerHeight
