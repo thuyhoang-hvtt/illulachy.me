@@ -19,7 +19,7 @@
 ### Phase 1: Canvas Foundation
 **Goal:** User can pan and zoom an infinite canvas smoothly at 60 FPS  
 **Depends on:** Nothing (first phase)  
-**Requirements:** TECH-01, TECH-02, TECH-03, TECH-04, TECH-05, CANVAS-01, CANVAS-02, CANVAS-03, CANVAS-04, CANVAS-05, CANVAS-06  
+**Requirements:** TECH-01, TECH-02, TECH-04, TECH-05, CANVAS-01, CANVAS-02, CANVAS-03, CANVAS-04, CANVAS-05, CANVAS-06  
 **Success Criteria** (what must be TRUE):
   1. User can drag the canvas with mouse and it pans smoothly
   2. User can zoom the canvas using scroll wheel without frame drops
@@ -27,7 +27,10 @@
   4. User can navigate using arrow keys to move viewport
   5. Canvas maintains 60 FPS during all interactions (measured with Chrome DevTools)
   6. Canvas displays loading spinner while initializing before first paint
-**Plans:** TBD
+**Plans:** 1 plan (01-PLAN.md)
+
+Plans:
+- [ ] 01-PLAN.md — 4 waves: Setup & Validation → Core Canvas → Controls & Polish → Integration & Verification
 
 ### Phase 2: Content Pipeline
 **Goal:** Content is authored in markdown and bundled as JSON at build time  
@@ -94,7 +97,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Canvas Foundation | 0/0 | Not started | - |
+| 1. Canvas Foundation | 0/1 | Planned | - |
 | 2. Content Pipeline | 0/0 | Not started | - |
 | 3. Custom Shapes & Hub | 0/0 | Not started | - |
 | 4. Timeline Layout | 0/0 | Not started | - |
