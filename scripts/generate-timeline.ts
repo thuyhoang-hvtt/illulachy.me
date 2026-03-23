@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { readFile, writeFile, mkdir } from 'fs/promises'
 import { basename, dirname } from 'path'
 import type { ContentNode, TimelineData } from '../src/types/content.js'
+import { aboutSchema, type AboutData } from '../src/types/about.js'
 
 // Zod schema for frontmatter validation
 const frontmatterSchema = z.object({
@@ -86,12 +87,42 @@ export function parseContentFile(filepath: string, content: string): ContentNode
   return node
 }
 
+/**
+ * Process about.md file and return AboutData
+ */
+export async function processAboutFile(): Promise<AboutData> {
+  try {
+    const content = await readFile('content/about.md', 'utf-8')
+    const parsed = matter(content)
+    
+    if (parsed.isEmpty) {
+      throw new Error('about.md has no frontmatter')
+    }
+    
+    // Validate with zod schema
+    const result = aboutSchema.safeParse(parsed.data)
+    
+    if (!result.success) {
+      const errors = result.error.issues?.map(e => `${e.path.join('.')}: ${e.message}`).join(', ') || result.error.message
+      throw new Error(`Validation failed: ${errors}`)
+    }
+    
+    return result.data
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error(`\x1b[31m[About] Error processing about.md: ${message}\x1b[0m`)
+    throw err
+  }
+}
+
 async function main() {
   console.log('[Timeline] Generating timeline.json...')
   
   try {
-    // Discover all markdown files in content directory
-    const files = await fg('content/**/*.md')
+    // Discover all markdown files in content directory (exclude about.md)
+    const files = await fg('content/**/*.md', {
+      ignore: ['content/about.md']
+    })
     
     if (files.length === 0) {
       console.log('[Timeline] No content files found')
@@ -147,6 +178,18 @@ async function main() {
     )
     
     console.log(`[Timeline] ✓ Generated timeline.json with ${nodes.length} entries`)
+    
+    // Process about.md and generate about.json
+    console.log('[About] Processing about.md...')
+    const aboutData = await processAboutFile()
+    
+    await writeFile(
+      'public/about.json',
+      JSON.stringify(aboutData, null, 2),
+      'utf-8'
+    )
+    
+    console.log(`[About] ✓ Generated about.json`)
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
     console.error(`\x1b[31m[Timeline] Fatal error: ${message}\x1b[0m`)
