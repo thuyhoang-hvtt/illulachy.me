@@ -1,4 +1,99 @@
 {
-  "nodes": [],
-  "lastUpdated": "2026-03-23T03:19:34.930Z"
+  "nodes": [
+    {
+      "id": "graduated-university",
+      "type": "milestone",
+      "title": "Graduated from University",
+      "date": "2020-05-01T00:00:00.000Z",
+      "description": "Bachelor of Science in Computer Science",
+      "institution": "University of Technology"
+    },
+    {
+      "id": "first-project",
+      "type": "milestone",
+      "title": "First Professional Project",
+      "date": "2021-09-01T00:00:00.000Z",
+      "description": "Joined as junior developer",
+      "institution": "Tech Startup Inc"
+    },
+    {
+      "id": "learning-react",
+      "type": "project",
+      "title": "React Learning Projects",
+      "date": "2022-03-01T00:00:00.000Z",
+      "url": "https://github.com/illulachy/react-experiments",
+      "description": "Collection of React practice projects",
+      "tech": "React, JavaScript"
+    },
+    {
+      "id": "portfolio-redesign",
+      "type": "project",
+      "title": "Portfolio Site Redesign",
+      "date": "2022-06-01T00:00:00.000Z",
+      "url": "https://illulachy.me",
+      "description": "Complete redesign with modern stack",
+      "tech": "React, TypeScript, Tailwind"
+    },
+    {
+      "id": "tldraw-discovery",
+      "type": "blog",
+      "title": "Discovering tldraw - An Infinite Canvas Library",
+      "date": "2023-11-03T00:00:00.000Z",
+      "url": "https://letters.illulachy.me/tldraw-discovery",
+      "description": "First impressions of tldraw for creative tools"
+    },
+    {
+      "id": "first-youtube-video",
+      "type": "youtube",
+      "title": "My First YouTube Video",
+      "date": "2023-12-10T00:00:00.000Z",
+      "url": "https://youtube.com/watch?v=example1",
+      "thumbnail": "https://img.youtube.com/vi/example1/maxresdefault.jpg",
+      "description": "Starting my YouTube journey"
+    },
+    {
+      "id": "building-in-public",
+      "type": "youtube",
+      "title": "Building in Public - Why I Share Everything",
+      "date": "2023-12-25T00:00:00.000Z",
+      "url": "https://youtube.com/watch?v=example2",
+      "thumbnail": "https://img.youtube.com/vi/example2/maxresdefault.jpg",
+      "description": "My philosophy on transparent development"
+    },
+    {
+      "id": "year-in-review",
+      "type": "blog",
+      "title": "2023 Year in Review",
+      "date": "2024-01-01T00:00:00.000Z",
+      "url": "https://letters.illulachy.me/2023-review",
+      "description": "Reflecting on a year of building and learning"
+    },
+    {
+      "id": "deep-dive-typescript",
+      "type": "blog",
+      "title": "Deep Dive into TypeScript Generics",
+      "date": "2024-01-15T00:00:00.000Z",
+      "url": "https://letters.illulachy.me/typescript-generics",
+      "description": "Advanced TypeScript patterns explained"
+    },
+    {
+      "id": "illulachy-launch",
+      "type": "project",
+      "title": "illulachy.me Launch",
+      "date": "2024-02-01T00:00:00.000Z",
+      "url": "https://illulachy.me",
+      "description": "Infinite canvas portfolio site",
+      "tech": "React, tldraw, Vite, TypeScript"
+    },
+    {
+      "id": "canvas-timeline-idea",
+      "type": "youtube",
+      "title": "Building an Infinite Canvas Portfolio",
+      "date": "2024-03-15T00:00:00.000Z",
+      "url": "https://youtube.com/watch?v=example3",
+      "thumbnail": "https://img.youtube.com/vi/example3/maxresdefault.jpg",
+      "description": "The idea behind this portfolio site"
+    }
+  ],
+  "lastUpdated": "2026-03-23T03:26:36.831Z"
 }
