@@ -11,7 +11,7 @@
 - [x] **Phase 2: Content Pipeline** - Markdown authoring workflow processing to bundled JSON (completed 2026-03-23)
 - [x] **Phase 3: Custom Shapes & Hub** - Portfolio hub and clickable timeline nodes rendering on canvas (completed 2026-03-23)
 - [x] **Phase 4: Timeline Layout** - Chronological positioning with collision detection (completed 2026-03-23)
-- [ ] **Phase 5: UI Chrome** - Loading states, responsive layout, and visual polish
+- [x] **Phase 5: UI Chrome** - Loading states, responsive layout, and visual polish (completed 2026-03-23)
 - [ ] **Phase 6: Game Mode** - Spaceship navigation with arrow key controls
 
 ## Phase Details
@@ -94,8 +94,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Foundation: Install Tailwind v4, Motion.dev, shadcn/ui; Create @theme config with design tokens; Create cn() utility and Dialog component (UI-01, UI-02, UI-03)
-- [ ] 05-02-PLAN.md — Component Migration: Migrate CanvasControls/CanvasLoader/MilestoneModal to Tailwind; Add Motion.dev exit animations; Make modal responsive (UI-04, UI-05)
+- [x] 05-01-PLAN.md — Foundation: Install Tailwind v4, Motion.dev, shadcn/ui; Create @theme config with design tokens; Create cn() utility and Dialog component (UI-01, UI-02, UI-03)
+- [x] 05-02-PLAN.md — Component Migration: Migrate CanvasControls/CanvasLoader/MilestoneModal to Tailwind; Add Motion.dev exit animations; Make modal responsive (UI-04, UI-05)
 
 ### Phase 6: Game Mode
 **Goal:** User can toggle spaceship navigation mode with arrow keys  
@@ -116,7 +116,7 @@ Plans:
 | 2. Content Pipeline | 2/2 | Complete ✓  | 2026-03-23 |
 | 3. Custom Shapes & Hub | 2/2 | Complete ✓ | 2026-03-23 |
 | 4. Timeline Layout | 2/2 | Complete ✓ | 2026-03-23 |
-| 5. UI Chrome | 0/2 | Not started | - |
+| 5. UI Chrome | 2/2 | Complete ✓ | 2026-03-23 |
 | 6. Game Mode | 0/0 | Not started | - |
 
 ## Coverage

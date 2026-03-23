@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-last_updated: "2026-03-23T10:29:20.646Z"
+last_updated: "2026-03-23T10:40:26.976Z"
 progress:
   total_phases: 6
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 9
-  completed_plans: 8
+  completed_plans: 9
 ---
 
 # Project State: illulachy.me
@@ -24,21 +24,43 @@ progress:
 
 ## Current Position
 
-Phase: 04 (timeline-layout) — COMPLETE
+Phase: 05 (ui-chrome) — COMPLETE
 Plan: 2 of 2 (all plans complete)
 
 ## Performance Metrics
 
-**Phases completed:** 4 / 6  
-**Plans completed:** 7 / 7  
-**Must-haves delivered:** 35 / 35 (TIME-01 through TIME-07 all fulfilled)  
-**Avg plan completion:** 18 min (Phase 1), 3.5 min (Phase 2 Plan 1), 5 min (Phase 2 Plan 2), 8 min (Phase 3 Plan 1), 10 min (Phase 3 Plan 2), 9 min (Phase 4 Plan 1), 7 min (Phase 4 Plan 2)
+**Phases completed:** 5 / 6  
+**Plans completed:** 9 / 9  
+**Must-haves delivered:** 40 / 40 (UI-01 through UI-05 all fulfilled)  
+**Avg plan completion:** 18 min (Phase 1), 3.5 min (Phase 2 Plan 1), 5 min (Phase 2 Plan 2), 8 min (Phase 3 Plan 1), 10 min (Phase 3 Plan 2), 9 min (Phase 4 Plan 1), 7 min (Phase 4 Plan 2), 5.4 min (Phase 5 Plan 1), 2.9 min (Phase 5 Plan 2)
 
 **Velocity:** 35 tasks in 59.8 minutes (~1.7 min/task)
 
 ## Accumulated Context
 
 ### Key Decisions
+
+**2026-03-23 - Phase 5 Plan 2 Execution Complete:**
+
+- ✓ Migrated CanvasControls, CanvasLoader, MilestoneModal to Tailwind utilities
+- ✓ Motion.dev exit animation: 400ms fade + scale (0.95) with expo easing for loader
+- ✓ shadcn/ui Dialog: Replaced custom modal with accessible Dialog component
+- ✓ Responsive modal: fullscreen mobile (w-[90vw]), centered card desktop (md:max-w-lg)
+- ✓ Hover states via CSS pseudo-classes instead of JavaScript event handlers
+- ✓ Code reduction: 153 lines removed, 70 added (net -83 lines, 54% reduction)
+- ✓ All requirements fulfilled: UI-04 (loading animation), UI-05 (responsive modal)
+- ✓ 3 tasks in 2m 55s, 3 commits, Phase 5 COMPLETE
+
+**2026-03-23 - Phase 5 Plan 1 Execution Complete:**
+
+- ✓ Installed Tailwind CSS v4.2.2 with @theme design tokens
+- ✓ Motion.dev v12.38.0 for animations, shadcn/ui Dialog with glassmorphism
+- ✓ Migrated 200+ CSS variables to Tailwind semantic naming (--color-*, --font-size-*, etc.)
+- ✓ Created .glass utility for glassmorphism (background, backdrop-filter, border, shadow)
+- ✓ cn() utility for conditional class merging (clsx + tailwind-merge)
+- ✓ shadcn/ui Dialog manually installed with z-[500] for modal hierarchy
+- ✓ All requirements fulfilled: UI-01, UI-02, UI-03
+- ✓ 3 tasks in 5m 21s, 5 commits
 
 **2026-03-23 - Phase 4 Plan 2 Execution Complete:**
 
@@ -158,7 +180,11 @@ Plan: 2 of 2 (all plans complete)
 - [x] Execute Phase 4 Plan 1: Core timeline layout algorithm (TIME-01, TIME-02, TIME-03)
 - [x] Execute Phase 4 Plan 2: Visual timeline axis (TIME-04, TIME-05, TIME-06, TIME-07)
 - [x] Phase 4 COMPLETE: All 7 requirements delivered (chronological layout + visual axis)
-- [ ] Plan Phase 5: UI Chrome (loading states, responsive layout, visual polish)
+- [x] Plan Phase 5: UI Chrome (loading states, responsive layout, visual polish)
+- [x] Execute Phase 5 Plan 1: Tailwind v4, Motion.dev, shadcn/ui foundation (UI-01, UI-02, UI-03)
+- [x] Execute Phase 5 Plan 2: Component migration (UI-04, UI-05)
+- [x] Phase 5 COMPLETE: All 5 requirements delivered (Tailwind utilities, Motion.dev animations, responsive modal)
+- [ ] Plan Phase 6: Game Mode (spaceship navigation with arrow keys)
 
 ### Blockers
 
@@ -166,16 +192,24 @@ None currently.
 
 ## Session Continuity
 
-**Last session:** 2026-03-23T07:23:15Z
-**Completed:** Phase 4 COMPLETE (both plans executed)  
-**Next action:** Plan Phase 5 (UI Chrome)
+**Last session:** 2026-03-23T10:38:51Z
+**Completed:** Phase 5 COMPLETE (both plans executed)  
+**Next action:** Plan Phase 6 (Game Mode)
 
 **Context for next session:**
 
-- Phase 4 COMPLETE: Chronological timeline layout with visual axis
-- TIME-01 through TIME-07 requirements fulfilled (all 7)
-- Plan 1: D3-force simulation for chronological positioning, collision detection, temporal gravity
-- Plan 2: SVG overlay with timeline axis, node connectors, camera synchronization
+- Phase 5 COMPLETE: UI Chrome with Tailwind v4, Motion.dev, shadcn/ui
+- UI-01 through UI-05 requirements fulfilled (all 5)
+- Plan 1: Tailwind v4 @theme configuration, Motion.dev installation, shadcn/ui Dialog component
+- Plan 2: Component migration (CanvasControls, CanvasLoader, MilestoneModal to Tailwind utilities)
+- Motion.dev exit animation: loader fades + scales out (400ms) when canvas ready
+- shadcn/ui Dialog: accessible modal with focus trap, ESC handling, portal rendering
+- Responsive modal: fullscreen on mobile (< 768px), centered card on desktop (>= 768px)
+- Code reduction: 54% fewer lines in migrated components
+- All 58 tests passing, build successful
+- Dev server running successfully on http://localhost:5173
+- Next phase: Game Mode (spaceship cursor, arrow key navigation through timeline)
+- Browser verification recommended: Test loader exit animation, modal responsiveness at mobile/desktop breakpoints
 - 11 timeline nodes positioned by date with constellation scatter aesthetic
 - Visual timeline axis at y=0 with fade effect near hub
 - Memoized positionedNodes prevents expensive re-simulation

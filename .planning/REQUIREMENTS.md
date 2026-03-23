@@ -58,8 +58,8 @@
 - [ ] **UI-01**: Site uses Tailwind CSS v4 for styling
 - [ ] **UI-02**: UI components built with shadcn/ui
 - [ ] **UI-03**: Animations powered by Motion.dev
-- [ ] **UI-04**: Site is responsive on mobile and desktop
-- [ ] **UI-05**: Loading spinner displays during initial canvas load
+- [x] **UI-04**: Site is responsive on mobile and desktop
+- [x] **UI-05**: Loading spinner displays during initial canvas load
 
 ### Technical Foundation
 
@@ -146,8 +146,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UI-01 | Phase 5 | Pending |
 | UI-02 | Phase 5 | Pending |
 | UI-03 | Phase 5 | Pending |
-| UI-04 | Phase 5 | Pending |
-| UI-05 | Phase 5 | Pending |
+| UI-04 | Phase 5 | Complete |
+| UI-05 | Phase 5 | Complete |
 | TECH-01 | Phase 1 | Complete ✓ |
 | TECH-02 | Phase 1 | Complete ✓ |
 | TECH-03 | Phase 2 | Complete |
