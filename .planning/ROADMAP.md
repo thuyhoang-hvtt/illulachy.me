@@ -35,13 +35,17 @@ Plans:
 ### Phase 2: Content Pipeline
 **Goal:** Content is authored in markdown and bundled as JSON at build time  
 **Depends on:** Phase 1 (needs TypeScript types from foundation)  
-**Requirements:** CONTENT-01, CONTENT-02, CONTENT-03, CONTENT-04, CONTENT-05  
+**Requirements:** CONTENT-01, CONTENT-02, CONTENT-03, CONTENT-04, CONTENT-05, TECH-03  
 **Success Criteria** (what must be TRUE):
   1. Developer can create markdown file with YAML frontmatter (date, title, URL, type) and it validates at build time
   2. Build process parses markdown files and outputs timeline.json with all entries
   3. At least 10-20 sample entries exist spanning multiple content types (YouTube, blog, project, milestone)
   4. Timeline JSON loads at runtime without parsing markdown
-**Plans:** TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Core pipeline: TypeScript types, generator script with gray-matter/zod/fast-glob, unit tests
+- [ ] 02-02-PLAN.md — Integration: Vite plugin with chokidar watch mode, 12 sample content entries, timeline.json generation
 
 ### Phase 3: Custom Shapes & Hub
 **Goal:** Portfolio hub and timeline nodes render as custom tldraw shapes with click handlers  
