@@ -24,21 +24,33 @@ progress:
 
 ## Current Position
 
-Phase: 04 (timeline-layout) — EXECUTING
-Plan: 2 of 2
+Phase: 04 (timeline-layout) — COMPLETE
+Plan: 2 of 2 (all plans complete)
 
 ## Performance Metrics
 
-**Phases completed:** 3 / 6  
-**Plans completed:** 6 / 7  
-**Must-haves delivered:** 31 / 31 (TIME-01, TIME-02, TIME-03 from Phase 4 Plan 1)  
-**Avg plan completion:** 18 min (Phase 1), 3.5 min (Phase 2 Plan 1), 5 min (Phase 2 Plan 2), 8 min (Phase 3 Plan 1), 10 min (Phase 3 Plan 2), 9 min (Phase 4 Plan 1)
+**Phases completed:** 4 / 6  
+**Plans completed:** 7 / 7  
+**Must-haves delivered:** 35 / 35 (TIME-01 through TIME-07 all fulfilled)  
+**Avg plan completion:** 18 min (Phase 1), 3.5 min (Phase 2 Plan 1), 5 min (Phase 2 Plan 2), 8 min (Phase 3 Plan 1), 10 min (Phase 3 Plan 2), 9 min (Phase 4 Plan 1), 7 min (Phase 4 Plan 2)
 
-**Velocity:** 31 tasks in 53.3 minutes (~1.7 min/task)
+**Velocity:** 35 tasks in 59.8 minutes (~1.7 min/task)
 
 ## Accumulated Context
 
 ### Key Decisions
+
+**2026-03-23 - Phase 4 Plan 2 Execution Complete:**
+
+- ✓ SVG overlay with pointerEvents: none for click-through transparency
+- ✓ ViewBox synchronized to tldraw camera (x, y, zoom) for automatic world coordinate mapping
+- ✓ Stroke width 1 / zoom maintains constant screen pixels regardless of zoom level
+- ✓ Linear fade opacity: distance / 500 for smooth hub fade effect (500px to 0px)
+- ✓ Memoized positionedNodes with useMemo prevents expensive D3 re-simulation on camera updates
+- ✓ useViewportTransform hook tracks camera changes via registerAfterChangeHandler
+- ✓ 10 tests added: useViewportTransform (4), TimelineOverlay (6)
+- ✓ All requirements fulfilled: TIME-04, TIME-05, TIME-06, TIME-07 (all content types render correctly)
+- ✓ 4 tasks in 6m 32s, 3 commits, Phase 4 COMPLETE
 
 **2026-03-23 - Phase 4 Plan 1 Execution Complete:**
 
@@ -127,8 +139,7 @@ Plan: 2 of 2
 
 ### Open Questions
 
-- **Timeline layout algorithm:** Which collision detection strategy will work best? (address during Phase 4 planning)
-- **Performance limits:** How many nodes can canvas handle before FPS drops? (test during Phase 4, optimize in Phase 8 if needed)
+- **Performance limits:** How many nodes can canvas handle before FPS drops? (test during Phase 8 if >50 nodes, optimize if needed)
 
 ### Todos
 
@@ -143,9 +154,11 @@ Plan: 2 of 2
 - [x] Execute Phase 3 Plan 1: Shape utils foundation
 - [x] Execute Phase 3 Plan 2: Canvas integration and modal
 - [x] Phase 3 COMPLETE: All 8 requirements delivered
-- [ ] Plan Phase 4: Timeline Layout (chronological positioning + collision detection)
+- [x] Plan Phase 4: Timeline Layout (chronological positioning + collision detection)
 - [x] Execute Phase 4 Plan 1: Core timeline layout algorithm (TIME-01, TIME-02, TIME-03)
-- [ ] Execute Phase 4 Plan 2: Visual timeline axis (TIME-04, TIME-05, TIME-06, TIME-07)
+- [x] Execute Phase 4 Plan 2: Visual timeline axis (TIME-04, TIME-05, TIME-06, TIME-07)
+- [x] Phase 4 COMPLETE: All 7 requirements delivered (chronological layout + visual axis)
+- [ ] Plan Phase 5: UI Chrome (loading states, responsive layout, visual polish)
 
 ### Blockers
 
@@ -153,21 +166,23 @@ None currently.
 
 ## Session Continuity
 
-**Last session:** 2026-03-23T07:11:33.733Z
-**Completed:** Phase 4 Plan 1 execution (Core Timeline Layout Algorithm)  
-**Next action:** Execute Phase 4 Plan 2 (Visual Timeline Axis)
+**Last session:** 2026-03-23T07:23:15Z
+**Completed:** Phase 4 COMPLETE (both plans executed)  
+**Next action:** Plan Phase 5 (UI Chrome)
 
 **Context for next session:**
 
-- Phase 4 Plan 1 COMPLETE: Chronological layout with D3-force simulation
-- TIME-01, TIME-02, TIME-03 requirements fulfilled
-- 11 timeline nodes now positioned by date (oldest farthest left, newest closest to hub)
-- Constellation scatter aesthetic with temporal gravity clustering
-- No overlaps (150px+ minimum gaps via 245px collision radius)
-- Session-based seeding (24-hour TTL) for stable-yet-varied layouts
-- All 45 tests passing, build successful
-- Next plan will add visual timeline axis (horizontal line, node connectors, fade near hub)
-- Manual browser verification recommended: Run `npm run dev`, test chronological layout
+- Phase 4 COMPLETE: Chronological timeline layout with visual axis
+- TIME-01 through TIME-07 requirements fulfilled (all 7)
+- Plan 1: D3-force simulation for chronological positioning, collision detection, temporal gravity
+- Plan 2: SVG overlay with timeline axis, node connectors, camera synchronization
+- 11 timeline nodes positioned by date with constellation scatter aesthetic
+- Visual timeline axis at y=0 with fade effect near hub
+- Memoized positionedNodes prevents expensive re-simulation
+- All 55 tests passing, build successful
+- Dev server running successfully on http://localhost:5173
+- Next phase: UI Chrome (loading states, responsive layout, Tailwind CSS v4, shadcn/ui)
+- Browser verification recommended: Run `npm run dev`, test chronological layout and visual axis
 
 **Context for next session:**
 
