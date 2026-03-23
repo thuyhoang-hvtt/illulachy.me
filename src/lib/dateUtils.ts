@@ -30,6 +30,9 @@ export function getDateRange(nodes: ContentNode[]): DateRange {
  * Older dates map to more negative X values (further left from hub at x=0).
  * Uses variable density: 2px per day (can be adjusted based on testing).
  * 
+ * The hub at x=0 represents the "present". All timeline nodes extend
+ * left (negative X), with newest nodes closest to hub but still negative.
+ * 
  * @param nodes - Timeline content nodes
  * @returns Function that maps date string to X coordinate
  */
@@ -37,10 +40,11 @@ export function createDateToXMapper(nodes: ContentNode[]): (date: string) => num
   const range = getDateRange(nodes)
   const newestTimestamp = range.newest.getTime()
   const PX_PER_DAY = 2 // Variable density (adjustable)
+  const MIN_OFFSET = 100 // Minimum distance from hub (ensures all nodes are negative X)
   
   return (dateStr: string) => {
     const timestamp = new Date(dateStr).getTime()
     const daysBeforeNewest = (newestTimestamp - timestamp) / (1000 * 60 * 60 * 24)
-    return -daysBeforeNewest * PX_PER_DAY
+    return -(daysBeforeNewest * PX_PER_DAY + MIN_OFFSET)
   }
 }
