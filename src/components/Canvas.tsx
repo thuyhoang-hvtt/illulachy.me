@@ -146,7 +146,12 @@ export function Canvas() {
     if (!editor) return
     const viewport = getViewportDimensions(editor)
     const zoom = calculateInitialZoom(viewport)
-    editor.setCamera({ x: 0, y: 0, z: zoom }, { animation: { duration: 300 } })
+
+    // Center camera on hub (which is at world position 0, 0)
+    const centerX = 0 + (viewport.width / 2) / zoom
+    const centerY = 0 + (viewport.height / 2) / zoom
+
+    editor.setCamera({ x: centerX, y: centerY, z: zoom }, { animation: { duration: 300 } })
   }, [])
   
   // Update loading condition to include data loading
@@ -170,15 +175,15 @@ export function Canvas() {
         />
       </div>
       {/* Fog overlay (above canvas, below controls) */}
-      <CanvasFogOverlay />
+      {/* <CanvasFogOverlay /> */}
       {/* Timeline overlay - TEMPORARILY DISABLED for debugging */}
-      {/* {isFullyLoaded && positionedNodes.length > 0 && (
+      {isFullyLoaded && positionedNodes.length > 0 && (
         <TimelineOverlay 
           nodes={positionedNodes}
           hubX={HUB_POSITION.x}
           viewportTransform={viewportTransform}
         />
-      )} */}
+      )}
       {/* Controls with contextual visibility - TEMPORARILY DISABLED */}
       {/* {isFullyLoaded && <CanvasControls editor={editorRef.current} visible={visible} />} */}
       {/* Milestone modal */}

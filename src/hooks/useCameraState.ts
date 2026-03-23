@@ -9,28 +9,40 @@ export function useCameraState(editor: Editor | null) {
   // Restore camera on mount
   useEffect(() => {
     if (!editor) return
-    
+
     // TEMPORARILY: Always center on hub (disable persistence for debugging)
     // TODO: Re-enable after Phase 4 verification
     const bounds = editor.getViewportScreenBounds()
-    const zoom = calculateInitialZoom({ 
-      width: bounds.width, 
-      height: bounds.height 
+    const zoom = calculateInitialZoom({
+      width: bounds.width,
+      height: bounds.height
     })
-    editor.setCamera({ x: 0, y: 0, z: zoom })
-    
-    // const saved = loadCameraState()
-    // if (saved) {
-    //   editor.setCamera({ x: saved.x, y: saved.y, z: saved.z })
-    // } else {
-    //   // First-time: calculate initial zoom
-    //   const bounds = editor.getViewportScreenBounds()
-    //   const zoom = calculateInitialZoom({ 
-    //     width: bounds.width, 
-    //     height: bounds.height 
-    //   })
-    //   editor.setCamera({ x: 0, y: 0, z: zoom })
-    // }
+
+    // Hub is centered at world position (0, 0)
+    // Camera position is top-left of viewport in world space
+    // To center hub on screen: camera = hub_center - (viewport_size / 2) / zoom
+    const centerX = 0 + (bounds.width / 2) / zoom
+    const centerY = 0 + (bounds.height / 2) / zoom
+
+    editor.setCamera({ x: centerX, y: centerY, z: zoom })
+
+    const saved = loadCameraState()
+    if (saved) {
+      editor.setCamera({ x: saved.x, y: saved.y, z: saved.z })
+    } else {
+      // First-time: calculate initial zoom and center on hub
+      const bounds = editor.getViewportScreenBounds()
+      const zoom = calculateInitialZoom({
+        width: bounds.width,
+        height: bounds.height
+      })
+
+      // Hub is centered at world position (0, 0)
+      const centerX = 0 + (bounds.width / 2) / zoom
+      const centerY = 0 + (bounds.height / 2) / zoom
+
+      editor.setCamera({ x: centerX, y: centerY, z: zoom })
+    }
   }, [editor])
   
   // Save camera on change (debounced)
