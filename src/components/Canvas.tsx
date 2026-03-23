@@ -162,14 +162,14 @@ export function Canvas() {
       </div>
       {/* Fog overlay (above canvas, below controls) */}
       <CanvasFogOverlay />
-      {/* Timeline overlay (axis and connectors) */}
-      {isFullyLoaded && positionedNodes.length > 0 && (
+      {/* Timeline overlay - TEMPORARILY DISABLED for debugging */}
+      {/* {isFullyLoaded && positionedNodes.length > 0 && (
         <TimelineOverlay 
           nodes={positionedNodes}
           hubX={HUB_POSITION.x}
           viewportTransform={viewportTransform}
         />
-      )}
+      )} */}
       {/* Controls with contextual visibility */}
       {isFullyLoaded && <CanvasControls editor={editorRef.current} visible={visible} />}
       {/* Milestone modal */}

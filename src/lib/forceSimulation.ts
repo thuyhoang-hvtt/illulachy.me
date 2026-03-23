@@ -48,10 +48,16 @@ export function simulateLayout(
     y: (random() - 0.5) * 1000 // Random scatter ±500px vertically
   }))
   
-  // 2. Create force simulation
+  // 2. Create force simulation with hub exclusion
+  const HUB_RADIUS = 500 // Exclusion zone around hub (x=0, y=0)
+  
   const simulation = forceSimulation(simNodes)
     .force('collide', forceCollide<SimNode>().radius(COLLISION_RADIUS))
-    .force('x', forceX<SimNode>(d => dateToX(d.date)).strength(0.5)) // Temporal gravity
+    .force('x', forceX<SimNode>(d => {
+      const targetX = dateToX(d.date)
+      // Ensure nodes stay left of hub exclusion zone
+      return Math.min(targetX, -HUB_RADIUS)
+    }).strength(0.5)) // Temporal gravity
     .force('y', forceY<SimNode>(0).strength(0.1)) // Weak axis pull (allows scatter)
     .stop() // Don't auto-tick (run synchronously)
   
