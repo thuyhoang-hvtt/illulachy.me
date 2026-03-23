@@ -51,7 +51,7 @@
 - [x] **CONTENT-02**: Markdown files include date, title, URL, and content type in frontmatter
 - [x] **CONTENT-03**: Content is processed at build time (not runtime)
 - [x] **CONTENT-04**: Timeline data is bundled as JSON
-- [ ] **CONTENT-05**: At least 10-20 sample entries exist for testing
+- [x] **CONTENT-05**: At least 10-20 sample entries exist for testing
 
 ### UI & Polish
 
@@ -142,7 +142,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONTENT-02 | Phase 2 | Complete |
 | CONTENT-03 | Phase 2 | Complete |
 | CONTENT-04 | Phase 2 | Complete |
-| CONTENT-05 | Phase 2 | Pending |
+| CONTENT-05 | Phase 2 | Complete |
 | UI-01 | Phase 5 | Pending |
 | UI-02 | Phase 5 | Pending |
 | UI-03 | Phase 5 | Pending |

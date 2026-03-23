@@ -25,21 +25,32 @@ progress:
 ## Current Position
 
 Phase: 02 (Content Pipeline)
-Current Plan: 1 of 2 — COMPLETE ✓
-Next Plan: 02-02-PLAN.md
+Current Plan: 2 of 2 — COMPLETE ✓
+Next Plan: Phase 02 Complete - Ready for Phase 03
 
 ## Performance Metrics
 
 **Phases completed:** 1 / 6  
-**Plans completed:** 2 / 3  
-**Must-haves delivered:** 15 / 15 (Phase 1-2.1)  
-**Avg phase completion:** 18 minutes (Phase 1), 3.5 minutes (Phase 2 Plan 1)
+**Plans completed:** 3 / 3  
+**Must-haves delivered:** 16 / 16 (Phase 1-2)  
+**Avg phase completion:** 18 minutes (Phase 1), 3.5 minutes (Phase 2 Plan 1), 5 minutes (Phase 2 Plan 2)
 
-**Velocity:** 17 tasks in 21.5 minutes (~1.3 min/task)
+**Velocity:** 20 tasks in 26.5 minutes (~1.3 min/task)
 
 ## Accumulated Context
 
 ### Key Decisions
+
+**2026-03-23 - Phase 2 Plan 2 Execution Complete:**
+
+- ✓ Vite plugin integration: buildStart + configureServer hooks for auto-regeneration
+- ✓ File watching with chokidar: 100ms debounce for stability
+- ✓ Full page reload on content changes (simple, reliable for dev workflow)
+- ✓ timeline.json committed to git (not gitignored) per CONTEXT.md
+- ✓ 12 sample entries created spanning 2020-2024 across all 4 types
+- ✓ Draft filtering verified (WebGPU post correctly excluded)
+- ✓ 3 tasks completed in 5 minutes, 3 commits, all verification checks passed
+- ✓ Requirements fulfilled: CONTENT-05
 
 **2026-03-23 - Phase 2 Plan 1 Execution Complete:**
 
@@ -90,8 +101,10 @@ Next Plan: 02-02-PLAN.md
 - [x] Validate tldraw v4.5 is latest stable version during Wave 0
 - [x] Plan Phase 2: Content Pipeline
 - [x] Execute Phase 2 Plan 1: Core generator script
-- [ ] Execute Phase 2 Plan 2: Vite integration and sample content
-- [ ] Create 12+ sample markdown entries during Phase 2 Plan 2
+- [x] Execute Phase 2 Plan 2: Vite integration and sample content
+- [x] Create 12+ sample markdown entries during Phase 2 Plan 2
+- [ ] Plan Phase 3: Timeline Shapes
+- [ ] Execute Phase 3: Timeline Shapes
 
 ### Blockers
 
@@ -100,18 +113,18 @@ None currently.
 ## Session Continuity
 
 **Last session:** 2026-03-23  
-**Completed:** Phase 2 Plan 1 execution (Core Content Pipeline)  
-**Next action:** Execute Phase 2 Plan 2 (Vite integration and sample content)
+**Completed:** Phase 2 Plan 2 execution (Vite Integration & Sample Content)  
+**Next action:** Plan Phase 3 (Timeline Shapes)
 
 **Context for next session:**
 
-- Phase 2 Plan 1 complete: Generator script working with validation and tests
-- Generator parses markdown → JSON with gray-matter/zod/fast-glob
-- ContentType now extensible (string instead of union)
-- Date normalization handles partial dates (e.g., "January 2024")
-- 9 unit tests passing, all verification criteria met
-- Ready for Vite plugin integration and sample content creation
-- Need to create 12+ sample entries spanning YouTube, blog, project, milestone types
+- Phase 2 complete: Content pipeline fully integrated with Vite dev workflow
+- Vite plugin watches content/**/*.md and regenerates timeline.json on changes
+- 12 sample entries (11 published + 1 draft) spanning 2020-2024
+- All 4 content types represented: milestone, project, blog, youtube
+- timeline.json validated: chronological order, ISO 8601 dates, type-specific fields
+- Developer workflow ready: edit markdown → see timeline update in browser
+- Ready for Phase 3: Timeline Shapes (tldraw shape definitions and rendering)
 
 ---
-*State updated: 2026-03-23 after Phase 2 Plan 1 execution*
+*State updated: 2026-03-23 after Phase 2 Plan 2 execution*

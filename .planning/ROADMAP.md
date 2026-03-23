@@ -8,7 +8,7 @@
 ## Phases
 
 - [ ] **Phase 1: Canvas Foundation** - Infinite canvas with pan/zoom navigation working smoothly
-- [ ] **Phase 2: Content Pipeline** - Markdown authoring workflow processing to bundled JSON
+- [x] **Phase 2: Content Pipeline** - Markdown authoring workflow processing to bundled JSON (completed 2026-03-23)
 - [ ] **Phase 3: Custom Shapes & Hub** - Portfolio hub and clickable timeline nodes rendering on canvas
 - [ ] **Phase 4: Timeline Layout** - Chronological positioning with collision detection
 - [ ] **Phase 5: UI Chrome** - Loading states, responsive layout, and visual polish
@@ -41,7 +41,7 @@ Plans:
   2. Build process parses markdown files and outputs timeline.json with all entries
   3. At least 10-20 sample entries exist spanning multiple content types (YouTube, blog, project, milestone)
   4. Timeline JSON loads at runtime without parsing markdown
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 02-01-PLAN.md — Core pipeline: TypeScript types, generator script with gray-matter/zod/fast-glob, unit tests
@@ -102,7 +102,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Canvas Foundation | 1/1 | Complete ✓ | 2026-03-22 |
-| 2. Content Pipeline | 0/0 | Not started | - |
+| 2. Content Pipeline | 2/2 | Complete   | 2026-03-23 |
 | 3. Custom Shapes & Hub | 0/0 | Not started | - |
 | 4. Timeline Layout | 0/0 | Not started | - |
 | 5. UI Chrome | 0/0 | Not started | - |
