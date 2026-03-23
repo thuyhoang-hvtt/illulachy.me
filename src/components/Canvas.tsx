@@ -1,16 +1,18 @@
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import { Tldraw, Editor } from 'tldraw'
 import 'tldraw/tldraw.css'
 import { CanvasLoader } from './CanvasLoader'
 import { CanvasControls } from './CanvasControls'
 import { CanvasFogOverlay } from './CanvasFogOverlay'
 import { MilestoneModal } from './MilestoneModal'
+import { TimelineOverlay } from './TimelineOverlay'
 import { customShapeUtils } from './shapes'
 import { useCameraState } from '@/hooks/useCameraState'
 import { useArrowKeyNavigation } from '@/hooks/useArrowKeyNavigation'
 import { useControlsVisibility } from '@/hooks/useControlsVisibility'
 import { useTimelineData } from '@/hooks/useTimelineData'
 import { useAboutData } from '@/hooks/useAboutData'
+import { useViewportTransform } from '@/hooks/useViewportTransform'
 import { calculateInitialZoom, getViewportDimensions } from '@/lib/cameraUtils'
 import { positionTimelineNodes, HUB_POSITION } from '@/lib/positionNodes'
 import { SHAPE_TYPES } from '@/types/shapes'
@@ -24,6 +26,15 @@ export function Canvas() {
   // Data fetching hooks
   const { data: timelineData, isLoading: timelineLoading } = useTimelineData()
   const { data: aboutData, isLoading: aboutLoading } = useAboutData()
+  
+  // Memoize positioned nodes (expensive simulation)
+  const positionedNodes = useMemo(() => {
+    if (!timelineData) return []
+    return positionTimelineNodes(timelineData.nodes)
+  }, [timelineData])
+  
+  // Get viewport transform for SVG overlay
+  const viewportTransform = useViewportTransform(editorRef.current)
   
   // Wire up hooks
   const { visible } = useControlsVisibility()
@@ -52,7 +63,7 @@ export function Canvas() {
   // Create shapes when data is ready
   useEffect(() => {
     const editor = editorRef.current
-    if (!editor || !timelineData || !aboutData) return
+    if (!editor || positionedNodes.length === 0 || !aboutData) return
 
     // Clear existing shapes first (for dev hot reload)
     const existingShapes = editor.getCurrentPageShapes()
@@ -78,8 +89,6 @@ export function Canvas() {
     })
 
     // Create timeline node shapes
-    const positionedNodes = positionTimelineNodes(timelineData.nodes)
-    
     positionedNodes.forEach(({ node, x, y }) => {
       // Determine shape type based on content type
       let shapeType: string
@@ -120,7 +129,7 @@ export function Canvas() {
     })
 
     console.log(`[Canvas] Created ${positionedNodes.length + 1} shapes (${positionedNodes.length} timeline + 1 hub)`)
-  }, [timelineData, aboutData])
+  }, [positionedNodes, aboutData])
   
   // Double-click to reset
   const handleDoubleClick = useCallback(() => {
@@ -153,6 +162,14 @@ export function Canvas() {
       </div>
       {/* Fog overlay (above canvas, below controls) */}
       <CanvasFogOverlay />
+      {/* Timeline overlay (axis and connectors) */}
+      {isFullyLoaded && positionedNodes.length > 0 && (
+        <TimelineOverlay 
+          nodes={positionedNodes}
+          hubX={HUB_POSITION.x}
+          viewportTransform={viewportTransform}
+        />
+      )}
       {/* Controls with contextual visibility */}
       {isFullyLoaded && <CanvasControls editor={editorRef.current} visible={visible} />}
       {/* Milestone modal */}
