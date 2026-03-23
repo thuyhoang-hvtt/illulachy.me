@@ -6,6 +6,9 @@
 
 import type { PhysicsState, KeyboardInput, PhysicsConfig } from '@/types/physics'
 
+// Re-export types for convenience
+export type { PhysicsState, KeyboardInput, PhysicsConfig }
+
 /**
  * Physics configuration constants
  */

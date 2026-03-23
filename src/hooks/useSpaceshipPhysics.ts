@@ -34,7 +34,7 @@ export function useSpaceshipPhysics(
   })
   
   const lastFrameTimeRef = useRef(0)
-  const rafIdRef = useRef<number>()
+  const rafIdRef = useRef<number | undefined>(undefined)
   
   // UI state (triggers re-render for cursor overlay)
   const [cursorState, setCursorState] = useState<CursorState>({ x: 0, y: 0, rotation: 0 })

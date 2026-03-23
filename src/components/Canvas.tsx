@@ -1,14 +1,18 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import { Tldraw, Editor } from 'tldraw'
 import 'tldraw/tldraw.css'
+import { AnimatePresence } from 'motion/react'
 import { CanvasLoader } from './CanvasLoader'
 // import { CanvasControls } from './CanvasControls'
 // import { CanvasFogOverlay } from './CanvasFogOverlay'
 import { MilestoneModal } from './MilestoneModal'
 import { TimelineOverlay } from './TimelineOverlay'
+import { SpaceshipCursor } from './SpaceshipCursor'
 import { customShapeUtils } from './shapes'
 import { useCameraState } from '@/hooks/useCameraState'
 import { useArrowKeyNavigation } from '@/hooks/useArrowKeyNavigation'
+import { useGameMode } from '@/hooks/useGameMode'
+import { useSpaceshipPhysics } from '@/hooks/useSpaceshipPhysics'
 // import { useControlsVisibility } from '@/hooks/useControlsVisibility'
 import { useTimelineData } from '@/hooks/useTimelineData'
 import { useAboutData } from '@/hooks/useAboutData'
@@ -36,10 +40,14 @@ export function Canvas() {
   // Get viewport transform for SVG overlay
   const viewportTransform = useViewportTransform(editorRef.current)
   
+  // Game mode state and physics
+  const { isGameMode } = useGameMode()
+  const cursorState = useSpaceshipPhysics(editorRef.current, isGameMode)
+  
   // Wire up hooks
   // const { visible } = useControlsVisibility()
   useCameraState(editorRef.current)
-  useArrowKeyNavigation(editorRef.current)
+  useArrowKeyNavigation(editorRef.current, !isGameMode) // Disable when game mode active
   
   const handleMount = useCallback((editor: Editor) => {
     editorRef.current = editor
@@ -165,6 +173,7 @@ export function Canvas() {
         style={{
           opacity: isFullyLoaded ? 1 : 0,
           transition: 'opacity 250ms var(--ease-out)',
+          boxShadow: isGameMode ? '0 0 0 3px var(--interactive-hover)' : 'none',
         }}
         onDoubleClick={handleDoubleClick}
       >
@@ -174,6 +183,18 @@ export function Canvas() {
           shapeUtils={customShapeUtils}
         />
       </div>
+      
+      {/* Spaceship cursor overlay */}
+      <AnimatePresence>
+        {isGameMode && (
+          <SpaceshipCursor
+            x={cursorState.x}
+            y={cursorState.y}
+            rotation={cursorState.rotation}
+          />
+        )}
+      </AnimatePresence>
+      
       {/* Fog overlay (above canvas, below controls) */}
       {/* <CanvasFogOverlay /> */}
       {/* Timeline overlay - TEMPORARILY DISABLED for debugging */}
