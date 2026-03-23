@@ -13,6 +13,7 @@
     "generate-timeline": "npx tsx scripts/generate-timeline.ts"
   },
   "dependencies": {
+    "chokidar": "^5.0.0",
     "fast-glob": "^3.3.3",
     "gray-matter": "^4.0.3",
     "react": "^19.2.4",
