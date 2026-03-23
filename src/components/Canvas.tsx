@@ -206,12 +206,11 @@ export function Canvas() {
       {/* Controls with contextual visibility - TEMPORARILY DISABLED */}
       {/* {isFullyLoaded && <CanvasControls editor={editorRef.current} visible={visible} />} */}
       {/* Milestone modal */}
-      {modalNode && (
-        <MilestoneModal 
-          node={modalNode} 
-          onClose={() => setModalNode(null)} 
-        />
-      )}
+      <MilestoneModal 
+        node={modalNode}
+        open={modalNode !== null}
+        onOpenChange={(open) => { if (!open) setModalNode(null) }}
+      />
     </>
   )
 }
