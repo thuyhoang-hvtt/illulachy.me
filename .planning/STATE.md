@@ -13,8 +13,10 @@ progress:
 
 # Project State: illulachy.me
 
-**Last updated:** 2026-03-22  
+**Last updated:** 2026-03-24  
 **Status:** Ready to plan
+
+Last activity: 2026-03-24 - Completed quick task 260324-az0: switch from tldraw to konvajs
 
 ## Project Reference
 
@@ -189,6 +191,12 @@ Plan: 2 of 2 (all plans complete)
 ### Blockers
 
 None currently.
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260324-az0 | switch from tldraw to konvajs | 2026-03-24 | 27e9897 | [260324-az0-switch-from-tldraw-to-konvajs](./quick/260324-az0-switch-from-tldraw-to-konvajs/) |
 
 ## Session Continuity
 
