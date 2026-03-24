@@ -5,6 +5,13 @@
   --canvas-bg: #131313;
   --canvas-grid: #18181B;
   --canvas-fog: rgba(19, 19, 19, 0.6);
+
+  /* Canvas Light Mode */
+  --canvas-bg-light: #F7F6F3;
+  --canvas-grid-line-light: rgba(0, 0, 0, 0.07);
+  --canvas-grid-line-light-strong: rgba(0, 0, 0, 0.13);
+  --canvas-grid-size-sm: 20px;
+  --canvas-grid-size-lg: 100px;
   
   /* Surface Hierarchy (Tonal Layering) */
   --surface-dim: #0A0A0A;
@@ -453,4 +460,22 @@ code {
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Canvas grid background (light mode) */
+.canvas-grid-light {
+  background-color: var(--canvas-bg-light);
+  background-image:
+    /* Large grid */
+    linear-gradient(var(--canvas-grid-line-light-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--canvas-grid-line-light-strong) 1px, transparent 1px),
+    /* Small grid */
+    linear-gradient(var(--canvas-grid-line-light) 1px, transparent 1px),
+    linear-gradient(90deg, var(--canvas-grid-line-light) 1px, transparent 1px);
+  background-size:
+    var(--canvas-grid-size-lg) var(--canvas-grid-size-lg),
+    var(--canvas-grid-size-lg) var(--canvas-grid-size-lg),
+    var(--canvas-grid-size-sm) var(--canvas-grid-size-sm),
+    var(--canvas-grid-size-sm) var(--canvas-grid-size-sm);
+  background-position: center center;
 }

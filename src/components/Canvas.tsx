@@ -1,14 +1,15 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
-import { Tldraw, Editor } from 'tldraw'
-import 'tldraw/tldraw.css'
+import { Stage, Layer } from 'react-konva'
+import type Konva from 'konva'
+import type { KonvaEventObject } from 'konva/lib/Node'
 import { AnimatePresence, motion } from 'motion/react'
 import { CanvasLoader } from './CanvasLoader'
 // import { CanvasControls } from './CanvasControls'
 // import { CanvasFogOverlay } from './CanvasFogOverlay'
 import { MilestoneModal } from './MilestoneModal'
 import { TimelineOverlay } from './TimelineOverlay'
+import { HubNode, YouTubeNode, BlogNode, ProjectNode, MilestoneNode } from './shapes'
 import { SpaceshipCursor } from './SpaceshipCursor'
-import { customShapeUtils } from './shapes'
 import { useCameraState } from '@/hooks/useCameraState'
 import { useArrowKeyNavigation } from '@/hooks/useArrowKeyNavigation'
 import { useGameMode } from '@/hooks/useGameMode'
@@ -19,12 +20,20 @@ import { useAboutData } from '@/hooks/useAboutData'
 import { useViewportTransform } from '@/hooks/useViewportTransform'
 import { calculateInitialZoom, getViewportDimensions } from '@/lib/cameraUtils'
 import { positionTimelineNodes, HUB_POSITION } from '@/lib/positionNodes'
-import { SHAPE_TYPES } from '@/types/shapes'
+import { ZOOM_MIN, ZOOM_MAX } from '@/types/camera'
 import type { ContentNode } from '@/types/content'
+
+// Node component mapping
+const nodeComponents: Record<string, React.ComponentType<any>> = {
+  youtube: YouTubeNode,
+  blog: BlogNode,
+  project: ProjectNode,
+  milestone: MilestoneNode,
+}
 
 export function Canvas() {
   const [isReady, setIsReady] = useState(false)
-  const editorRef = useRef<Editor | null>(null)
+  const stageRef = useRef<Konva.Stage | null>(null)
   const [modalNode, setModalNode] = useState<ContentNode | null>(null)
   
   // Data fetching hooks
@@ -38,28 +47,56 @@ export function Canvas() {
   }, [timelineData])
   
   // Get viewport transform for SVG overlay
-  const viewportTransform = useViewportTransform(editorRef.current)
+  const viewportTransform = useViewportTransform(stageRef.current)
   
   // Game mode state and physics
   const { isGameMode } = useGameMode()
-  const cursorState = useSpaceshipPhysics(editorRef.current, isGameMode)
+  const cursorState = useSpaceshipPhysics(stageRef.current, isGameMode)
   
   // Wire up hooks
   // const { visible } = useControlsVisibility()
-  useCameraState(editorRef.current)
-  useArrowKeyNavigation(editorRef.current, !isGameMode) // Disable when game mode active
+  useCameraState(stageRef.current)
+  useArrowKeyNavigation(stageRef.current, !isGameMode) // Disable when game mode active
   
-  const handleMount = useCallback((editor: Editor) => {
-    editorRef.current = editor
+  // Handle zoom with wheel
+  const handleWheel = useCallback((e: KonvaEventObject<WheelEvent>) => {
+    e.evt.preventDefault()
+    const stage = stageRef.current
+    if (!stage) return
     
-    // Configure navigation
-    editor.updateInstanceState({ 
-      isGridMode: true // Enable logical grid
+    const scaleBy = 1.01
+    const oldScale = stage.scaleX()
+    const pointer = stage.getPointerPosition()
+    if (!pointer) return
+    
+    const mousePointTo = {
+      x: (pointer.x - stage.x()) / oldScale,
+      y: (pointer.y - stage.y()) / oldScale,
+    }
+    
+    const newScale = e.evt.deltaY < 0 ? oldScale * scaleBy : oldScale / scaleBy
+    const clampedScale = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, newScale))
+    
+    stage.scale({ x: clampedScale, y: clampedScale })
+    stage.position({
+      x: pointer.x - mousePointTo.x * clampedScale,
+      y: pointer.y - mousePointTo.y * clampedScale,
     })
     
-    // Set hand tool as default (drag to pan without Space key)
-    editor.setCurrentTool('hand')
+    // Trigger custom zoom event for viewport transform hook
+    stage.fire('zoom')
+  }, [])
+  
+  // Handle drag end for camera state persistence
+  const handleDragEnd = useCallback(() => {
+    const stage = stageRef.current
+    if (!stage) return
     
+    // Trigger custom dragend event for camera state hook
+    stage.fire('dragmove')
+  }, [])
+  
+  const handleMount = useCallback(() => {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => setIsReady(true))
     })
@@ -77,89 +114,28 @@ export function Canvas() {
     return () => window.removeEventListener('openMilestoneModal', handleOpenModal)
   }, [timelineData])
   
-  // Create shapes when data is ready
+  // Initialize stage on mount
   useEffect(() => {
-    const editor = editorRef.current
-    if (!editor || positionedNodes.length === 0 || !aboutData) return
-
-    // Clear existing shapes first (for dev hot reload)
-    const existingShapes = editor.getCurrentPageShapes()
-    if (existingShapes.length > 0) {
-      editor.deleteShapes(existingShapes.map(s => s.id))
+    if (stageRef.current) {
+      handleMount()
     }
-
-    // Create hub shape at center
-    editor.createShape({
-      type: SHAPE_TYPES.HUB as any,
-      x: HUB_POSITION.x - 320, // Center the 640px wide shape
-      y: HUB_POSITION.y - 180, // Center the 360px tall shape
-      isLocked: true,
-      props: {
-        w: 640,
-        h: 360,
-        name: aboutData.name,
-        title: aboutData.title,
-        bio: aboutData.bio,
-        avatar: aboutData.avatar,
-        social: aboutData.social,
-      },
-    })
-
-    // Create timeline node shapes
-    positionedNodes.forEach(({ node, x, y }) => {
-      // Determine shape type based on content type
-      let shapeType: string
-      switch (node.type) {
-        case 'youtube': shapeType = SHAPE_TYPES.YOUTUBE; break
-        case 'blog': shapeType = SHAPE_TYPES.BLOG; break
-        case 'project': shapeType = SHAPE_TYPES.PROJECT; break
-        case 'milestone': shapeType = SHAPE_TYPES.MILESTONE; break
-        default: shapeType = SHAPE_TYPES.BLOG // Fallback
-      }
-
-      // Center the 280x200 shape on calculated position
-      // Build props based on shape type (milestone nodes don't have url)
-      const shapeProps: any = {
-        w: 280,
-        h: 200,
-        nodeId: node.id,
-        title: node.title,
-        date: node.date,
-        thumbnail: node.thumbnail,
-        description: node.description,
-        institution: node.institution,
-        tech: node.tech,
-      }
-      
-      // Only add url for non-milestone nodes
-      if (node.type !== 'milestone' && node.url) {
-        shapeProps.url = node.url
-      }
-      
-      editor.createShape({
-        type: shapeType as any,
-        x: x - 140, // Center 280px wide shape
-        y: y - 100, // Center 200px tall shape
-        isLocked: true,
-        props: shapeProps,
-      })
-    })
-
-    console.log(`[Canvas] Created ${positionedNodes.length + 1} shapes (${positionedNodes.length} timeline + 1 hub)`)
-  }, [positionedNodes, aboutData])
+  }, [handleMount])
   
   // Double-click to reset
   const handleDoubleClick = useCallback(() => {
-    const editor = editorRef.current
-    if (!editor) return
-    const viewport = getViewportDimensions(editor)
+    const stage = stageRef.current
+    if (!stage) return
+    const viewport = getViewportDimensions()
     const zoom = calculateInitialZoom(viewport)
 
     // Center camera on hub (which is at world position 0, 0)
-    const centerX = 0 + (viewport.width / 2) / zoom
-    const centerY = 0 + (viewport.height / 2) / zoom
-
-    editor.setCamera({ x: centerX, y: centerY, z: zoom }, { animation: { duration: 300 } })
+    // Konva position is the offset, so to center:
+    stage.position({
+      x: viewport.width / 2,
+      y: viewport.height / 2,
+    })
+    stage.scale({ x: zoom, y: zoom })
+    stage.batchDraw()
   }, [])
   
   // Update loading condition to include data loading
@@ -187,7 +163,7 @@ export function Canvas() {
         )}
       </AnimatePresence>
       <div 
-        className="fixed inset-0"
+        className="fixed inset-0 canvas-grid-light"
         style={{
           opacity: isFullyLoaded ? 1 : 0,
           transition: 'opacity 250ms var(--ease-out)',
@@ -195,11 +171,42 @@ export function Canvas() {
         }}
         onDoubleClick={handleDoubleClick}
       >
-        <Tldraw 
-          hideUi 
-          onMount={handleMount}
-          shapeUtils={customShapeUtils}
-        />
+        <Stage
+          ref={stageRef}
+          width={window.innerWidth}
+          height={window.innerHeight}
+          draggable
+          onWheel={handleWheel}
+          onDragEnd={handleDragEnd}
+        >
+          <Layer>
+            {/* Hub node */}
+            {aboutData && (
+              <HubNode
+                x={HUB_POSITION.x - 320}
+                y={HUB_POSITION.y - 180}
+                name={aboutData.name}
+                title={aboutData.title}
+                bio={aboutData.bio}
+                avatar={aboutData.avatar}
+                social={aboutData.social}
+              />
+            )}
+            
+            {/* Timeline nodes */}
+            {positionedNodes.map(({ node, x, y }) => {
+              const NodeComponent = nodeComponents[node.type]
+              return (
+                <NodeComponent
+                  key={node.id}
+                  x={x - 140}
+                  y={y - 100}
+                  {...node}
+                />
+              )
+            })}
+          </Layer>
+        </Stage>
       </div>
       
       {/* Spaceship cursor overlay */}
@@ -215,7 +222,7 @@ export function Canvas() {
       
       {/* Fog overlay (above canvas, below controls) */}
       {/* <CanvasFogOverlay /> */}
-      {/* Timeline overlay - TEMPORARILY DISABLED for debugging */}
+      {/* Timeline overlay */}
       {isFullyLoaded && positionedNodes.length > 0 && (
         <TimelineOverlay 
           nodes={positionedNodes}
@@ -224,7 +231,7 @@ export function Canvas() {
         />
       )}
       {/* Controls with contextual visibility - TEMPORARILY DISABLED */}
-      {/* {isFullyLoaded && <CanvasControls editor={editorRef.current} visible={visible} />} */}
+      {/* {isFullyLoaded && <CanvasControls editor={stageRef.current} visible={visible} />} */}
       {/* Milestone modal */}
       <MilestoneModal 
         node={modalNode}

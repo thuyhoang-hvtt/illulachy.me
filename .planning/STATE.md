@@ -208,6 +208,12 @@ Plan: 1 of 1 (COMPLETE)
 
 None currently.
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260324-az0 | switch from tldraw to konvajs | 2026-03-24 | 27e9897 | [260324-az0-switch-from-tldraw-to-konvajs](./quick/260324-az0-switch-from-tldraw-to-konvajs/) |
+
 ## Session Continuity
 
 **Last session:** 2026-03-24T00:47:18Z

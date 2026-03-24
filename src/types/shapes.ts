@@ -1,9 +1,9 @@
 /**
- * Custom shape type declarations for tldraw
+ * Custom shape type constants
  * Defines shape types for timeline nodes and portfolio hub
  */
 
-// Shape type constants
+// Shape type constants (kept for consistency, though not used by Konva)
 export const SHAPE_TYPES = {
   HUB: 'hub-shape',
   YOUTUBE: 'youtube-node',
@@ -14,4 +14,3 @@ export const SHAPE_TYPES = {
 
 // Type for shape type values
 export type ShapeType = typeof SHAPE_TYPES[keyof typeof SHAPE_TYPES]
-

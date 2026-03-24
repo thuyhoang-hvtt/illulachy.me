@@ -1,66 +1,77 @@
 import { useEffect, useRef } from 'react'
-import type { Editor } from 'tldraw'
+import type Konva from 'konva'
 import { saveCameraState, loadCameraState } from '@/lib/localStorageUtils'
 import { calculateInitialZoom } from '@/lib/cameraUtils'
 
-export function useCameraState(editor: Editor | null) {
+export function useCameraState(stage: Konva.Stage | null) {
   const saveTimeoutRef = useRef<number | undefined>(undefined)
   
   // Restore camera on mount
   useEffect(() => {
-    if (!editor) return
-
-    // TEMPORARILY: Always center on hub (disable persistence for debugging)
-    // TODO: Re-enable after Phase 4 verification
-    const bounds = editor.getViewportScreenBounds()
-    const zoom = calculateInitialZoom({
-      width: bounds.width,
-      height: bounds.height
-    })
-
-    // Hub is centered at world position (0, 0)
-    // Camera position is top-left of viewport in world space
-    // To center hub on screen: camera = hub_center - (viewport_size / 2) / zoom
-    const centerX = 0 + (bounds.width / 2) / zoom
-    const centerY = 0 + (bounds.height / 2) / zoom
-
-    editor.setCamera({ x: centerX, y: centerY, z: zoom })
+    if (!stage) return
 
     const saved = loadCameraState()
     if (saved) {
-      editor.setCamera({ x: saved.x, y: saved.y, z: saved.z })
+      // Convert tldraw camera format (x, y, z) to Konva format (position, scale)
+      // tldraw camera x,y is viewport top-left in world space
+      // Konva position x,y is stage offset (inverse of camera)
+      const zoom = saved.z
+      const centerX = window.innerWidth / 2
+      const centerY = window.innerHeight / 2
+      
+      stage.position({
+        x: centerX - saved.x * zoom,
+        y: centerY - saved.y * zoom,
+      })
+      stage.scale({ x: zoom, y: zoom })
     } else {
       // First-time: calculate initial zoom and center on hub
-      const bounds = editor.getViewportScreenBounds()
       const zoom = calculateInitialZoom({
-        width: bounds.width,
-        height: bounds.height
+        width: window.innerWidth,
+        height: window.innerHeight
       })
 
       // Hub is centered at world position (0, 0)
-      const centerX = 0 + (bounds.width / 2) / zoom
-      const centerY = 0 + (bounds.height / 2) / zoom
-
-      editor.setCamera({ x: centerX, y: centerY, z: zoom })
+      // Center stage on hub
+      stage.position({
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2,
+      })
+      stage.scale({ x: zoom, y: zoom })
     }
-  }, [editor])
+    
+    stage.batchDraw()
+  }, [stage])
   
   // Save camera on change (debounced)
   useEffect(() => {
-    if (!editor) return
+    if (!stage) return
     
     const handleChange = () => {
       window.clearTimeout(saveTimeoutRef.current)
       saveTimeoutRef.current = window.setTimeout(() => {
-        const camera = editor.getCamera()
-        saveCameraState({ x: camera.x, y: camera.y, z: camera.z })
+        const scale = stage.scaleX()
+        const pos = stage.position()
+        
+        // Convert Konva format to tldraw-compatible format for localStorage
+        const centerX = window.innerWidth / 2
+        const centerY = window.innerHeight / 2
+        
+        saveCameraState({
+          x: (centerX - pos.x) / scale,
+          y: (centerY - pos.y) / scale,
+          z: scale
+        })
       }, 500)
     }
     
-    editor.on('change', handleChange)
+    stage.on('dragmove', handleChange)
+    stage.on('zoom', handleChange)
+    
     return () => {
-      editor.off('change', handleChange)
+      stage.off('dragmove', handleChange)
+      stage.off('zoom', handleChange)
       window.clearTimeout(saveTimeoutRef.current)
     }
-  }, [editor])
+  }, [stage])
 }
