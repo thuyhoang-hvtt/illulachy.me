@@ -1,41 +1,49 @@
 import { useCallback } from 'react'
-import type { Editor } from 'tldraw'
+import type Konva from 'konva'
 import { ZOOM_MIN, ZOOM_MAX } from '@/types'
 import { calculateInitialZoom, getViewportDimensions } from '@/lib/cameraUtils'
 import { cn } from '@/lib/utils'
 
 interface CanvasControlsProps {
-  editor: Editor | null
+  stage: Konva.Stage | null
   visible: boolean
 }
 
-export function CanvasControls({ editor, visible }: CanvasControlsProps) {
+export function CanvasControls({ stage, visible }: CanvasControlsProps) {
   const zoomIn = useCallback(() => {
-    if (!editor) return
-    const camera = editor.getCamera()
-    const newZoom = Math.min(camera.z * 1.25, ZOOM_MAX)
-    editor.setCamera({ x: camera.x, y: camera.y, z: newZoom }, { animation: { duration: 150 } })
-  }, [editor])
+    if (!stage) return
+    const scale = stage.scaleX()
+    const newZoom = Math.min(scale * 1.25, ZOOM_MAX)
+    stage.scale({ x: newZoom, y: newZoom })
+    stage.batchDraw()
+  }, [stage])
   
   const zoomOut = useCallback(() => {
-    if (!editor) return
-    const camera = editor.getCamera()
-    const newZoom = Math.max(camera.z / 1.25, ZOOM_MIN)
-    editor.setCamera({ x: camera.x, y: camera.y, z: newZoom }, { animation: { duration: 150 } })
-  }, [editor])
+    if (!stage) return
+    const scale = stage.scaleX()
+    const newZoom = Math.max(scale / 1.25, ZOOM_MIN)
+    stage.scale({ x: newZoom, y: newZoom })
+    stage.batchDraw()
+  }, [stage])
   
   const resetToHub = useCallback(() => {
-    if (!editor) return
-    const viewport = getViewportDimensions(editor)
+    if (!stage) return
+    const viewport = getViewportDimensions()
     const zoom = calculateInitialZoom(viewport)
-    editor.setCamera({ x: 0, y: 0, z: zoom }, { animation: { duration: 300 } })
-  }, [editor])
+    stage.to({
+      x: viewport.width / 2,
+      y: viewport.height / 2,
+      scaleX: zoom,
+      scaleY: zoom,
+      duration: 0.3,
+    })
+  }, [stage])
   
   const fitToScreen = useCallback(() => {
-    if (!editor) return
-    // Fit entire bounds in view
-    editor.zoomToFit({ animation: { duration: 300 } })
-  }, [editor])
+    if (!stage) return
+    // Reset to initial view (hub centered)
+    resetToHub()
+  }, [stage, resetToHub])
   
   return (
     <div 

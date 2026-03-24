@@ -1,38 +1,42 @@
 import { useEffect, useCallback } from 'react'
-import type { Editor } from 'tldraw'
+import type Konva from 'konva'
 
-export function useArrowKeyNavigation(editor: Editor | null) {
+export function useArrowKeyNavigation(stage: Konva.Stage | null) {
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (!editor) return
+    if (!stage) return
     
     const PAN_AMOUNT = 100
-    const camera = editor.getCamera()
-    let newX = camera.x
-    let newY = camera.y
+    const scale = stage.scaleX()
+    const pos = stage.position()
+    let newX = pos.x
+    let newY = pos.y
     
     switch (e.key) {
       case 'ArrowUp':
-        newY = camera.y - PAN_AMOUNT
+        newY = pos.y + PAN_AMOUNT * scale
         break
       case 'ArrowDown':
-        newY = camera.y + PAN_AMOUNT
+        newY = pos.y - PAN_AMOUNT * scale
         break
       case 'ArrowLeft':
-        newX = camera.x - PAN_AMOUNT
+        newX = pos.x + PAN_AMOUNT * scale
         break
       case 'ArrowRight':
-        newX = camera.x + PAN_AMOUNT
+        newX = pos.x - PAN_AMOUNT * scale
         break
       default:
         return
     }
     
     e.preventDefault()
-    editor.setCamera(
-      { x: newX, y: newY, z: camera.z },
-      { animation: { duration: 150 } }
-    )
-  }, [editor])
+    
+    // Animate position change
+    stage.to({
+      x: newX,
+      y: newY,
+      duration: 0.15,
+    })
+  }, [stage])
   
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown)

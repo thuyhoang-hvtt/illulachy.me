@@ -1,25 +1,11 @@
 /**
- * Custom shape utilities for tldraw
- * Exports all shape utils as an array for registration with tldraw editor
+ * Custom shape components for Konva canvas
+ * Exports all node components for declarative rendering
  */
 
-import { HubUtil } from './HubShape'
-import { YouTubeNodeUtil } from './YouTubeNodeShape'
-import { BlogNodeUtil } from './BlogNodeShape'
-import { ProjectNodeUtil } from './ProjectNodeShape'
-import { MilestoneNodeUtil } from './MilestoneNodeShape'
+export { HubNode } from './HubNode'
+export { YouTubeNode } from './YouTubeNode'
+export { BlogNode } from './BlogNode'
+export { ProjectNode } from './ProjectNode'
+export { MilestoneNode } from './MilestoneNode'
 
-/**
- * Array of all custom shape utils
- * Pass this to Tldraw component's shapeUtils prop
- */
-export const customShapeUtils = [
-  HubUtil,
-  YouTubeNodeUtil,
-  BlogNodeUtil,
-  ProjectNodeUtil,
-  MilestoneNodeUtil,
-] as const
-
-// Individual exports for direct access if needed
-export { HubUtil, YouTubeNodeUtil, BlogNodeUtil, ProjectNodeUtil, MilestoneNodeUtil }

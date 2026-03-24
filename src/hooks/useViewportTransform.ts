@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import type { Editor } from 'tldraw'
+import type Konva from 'konva'
 
 export interface ViewportTransform {
   x: number
@@ -8,34 +8,56 @@ export interface ViewportTransform {
 }
 
 /**
- * Hook to track tldraw viewport transform for SVG overlay synchronization
+ * Hook to track Konva viewport transform for SVG overlay synchronization
  * 
  * Listens to camera changes and provides current x, y, zoom for SVG viewBox calculation.
  * 
- * @param editor - Tldraw editor instance
+ * @param stage - Konva stage instance
  * @returns Current viewport transform { x, y, zoom }
  */
-export function useViewportTransform(editor: Editor | null): ViewportTransform {
+export function useViewportTransform(stage: Konva.Stage | null): ViewportTransform {
   const [transform, setTransform] = useState<ViewportTransform>(() => {
-    if (!editor) return { x: 0, y: 0, zoom: 1 }
+    if (!stage) return { x: 0, y: 0, zoom: 1 }
     
-    const camera = editor.getCamera()
-    return { x: camera.x, y: camera.y, zoom: camera.z }
+    const scale = stage.scaleX()
+    const pos = stage.position()
+    
+    // Convert Konva position to viewport coordinates
+    const centerX = window.innerWidth / 2
+    const centerY = window.innerHeight / 2
+    
+    return {
+      x: (centerX - pos.x) / scale,
+      y: (centerY - pos.y) / scale,
+      zoom: scale
+    }
   })
   
   useEffect(() => {
-    if (!editor) return
+    if (!stage) return
     
-    const removeListener = editor.sideEffects.registerAfterChangeHandler(
-      'camera',
-      () => {
-        const camera = editor.getCamera()
-        setTransform({ x: camera.x, y: camera.y, zoom: camera.z })
-      }
-    )
+    const updateTransform = () => {
+      const scale = stage.scaleX()
+      const pos = stage.position()
+      
+      const centerX = window.innerWidth / 2
+      const centerY = window.innerHeight / 2
+      
+      setTransform({
+        x: (centerX - pos.x) / scale,
+        y: (centerY - pos.y) / scale,
+        zoom: scale
+      })
+    }
     
-    return removeListener
-  }, [editor])
+    stage.on('dragmove', updateTransform)
+    stage.on('zoom', updateTransform)
+    
+    return () => {
+      stage.off('dragmove', updateTransform)
+      stage.off('zoom', updateTransform)
+    }
+  }, [stage])
   
   return transform
 }
