@@ -156,7 +156,7 @@ export function Canvas() {
         )}
       </AnimatePresence>
       <div 
-        className="fixed inset-0"
+        className="fixed inset-0 canvas-grid-light"
         style={{
           opacity: isFullyLoaded ? 1 : 0,
           transition: 'opacity 250ms var(--ease-out)',

@@ -5,7 +5,14 @@
   --color-canvas-bg: #131313;
   --color-canvas-grid: #18181B;
   --color-canvas-fog: rgba(19, 19, 19, 0.6);
-  
+
+  /* Colors - Canvas Light Mode */
+  --color-canvas-bg-light: #FAFAFA;
+  --color-canvas-grid-line: rgba(0, 0, 0, 0.04);
+  --color-canvas-grid-line-strong: rgba(0, 0, 0, 0.08);
+  --canvas-grid-size-sm: 20px;
+  --canvas-grid-size-lg: 100px;
+
   /* Colors - Surface hierarchy */
   --color-surface-dim: #0A0A0A;
   --color-surface: #131313;
@@ -14,7 +21,7 @@
   --color-surface-container: #212121;
   --color-surface-container-high: #272727;
   --color-surface-container-highest: #2E2E2E;
-  
+
   /* Colors - Interactive (mauve) */
   --color-interactive: #E0AFFF;
   --color-interactive-hover: #EAC7FF;
@@ -23,14 +30,14 @@
   --color-interactive-subtle: rgba(224, 175, 255, 0.1);
   --color-interactive-medium: rgba(224, 175, 255, 0.2);
   --color-interactive-strong: rgba(224, 175, 255, 0.3);
-  
+
   /* Colors - Text hierarchy */
   --color-primary: #FFFFFF;
   --color-secondary: #A1A1AA;
   --color-tertiary: #71717A;
   --color-quaternary: #52525B;
   --color-inverse: #09090B;
-  
+
   /* Colors - Semantic */
   --color-success: #22C55E;
   --color-success-bg: rgba(34, 197, 94, 0.1);
@@ -40,13 +47,13 @@
   --color-error-bg: rgba(239, 68, 68, 0.1);
   --color-info: #3B82F6;
   --color-info-bg: rgba(59, 130, 246, 0.1);
-  
+
   /* Colors - Borders */
   --color-border-ghost: rgba(255, 255, 255, 0.06);
   --color-border-subtle: rgba(255, 255, 255, 0.1);
   --color-border: rgba(255, 255, 255, 0.15);
   --color-border-strong: rgba(255, 255, 255, 0.2);
-  
+
   /* Spacing (8px grid) */
   --spacing-0: 0;
   --spacing-px: 1px;
@@ -67,13 +74,13 @@
   --spacing-40: 160px;
   --spacing-48: 192px;
   --spacing-64: 256px;
-  
+
   /* Typography - Font families */
   --font-display: "Noto Serif", Georgia, serif;
   --font-heading: "Noto Serif", Georgia, serif;
   --font-body: "Space Grotesk", Inter, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
-  
+
   /* Typography - Font sizes (with fluid scaling for responsive) */
   --font-size-xs: 0.75rem;
   --font-size-sm: clamp(0.75rem, 1.5vw, 0.875rem);
@@ -89,7 +96,7 @@
   --font-size-display-md: clamp(3rem, 7vw, 5rem);
   --font-size-display-lg: clamp(4rem, 10vw, 8rem);
   --font-size-display-xl: clamp(5rem, 12vw, 10rem);
-  
+
   /* Typography - Font weights */
   --font-weight-light: 300;
   --font-weight-normal: 400;
@@ -97,7 +104,7 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
   --font-weight-black: 900;
-  
+
   /* Typography - Line heights */
   --line-height-none: 1;
   --line-height-tight: 1.25;
@@ -105,7 +112,7 @@
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.625;
   --line-height-loose: 2;
-  
+
   /* Typography - Letter spacing */
   --letter-spacing-tighter: -0.05em;
   --letter-spacing-tight: -0.025em;
@@ -113,7 +120,7 @@
   --letter-spacing-wide: 0.025em;
   --letter-spacing-wider: 0.05em;
   --letter-spacing-widest: 0.1em;
-  
+
   /* Shadows */
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
@@ -122,7 +129,7 @@
   --shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.16);
   --shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.24);
   --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.2);
-  
+
   /* Border radius */
   --radius-none: 0;
   --radius-sm: 2px;
@@ -133,7 +140,7 @@
   --radius-2xl: 16px;
   --radius-3xl: 24px;
   --radius-full: 9999px;
-  
+
   /* Z-index scale */
   --z-index-base: 0;
   --z-index-timeline: 10;
@@ -144,7 +151,7 @@
   --z-index-modal: 500;
   --z-index-toast: 600;
   --z-index-tooltip: 700;
-  
+
   /* Easing functions */
   --ease-linear: linear;
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
@@ -152,7 +159,7 @@
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   --ease-expo: cubic-bezier(0.87, 0, 0.13, 1);
-  
+
   /* Animation durations */
   --duration-instant: 0ms;
   --duration-fast: 100ms;
@@ -163,13 +170,133 @@
   --duration-slowest: 1000ms;
 }
 
-/* Glass utility - uses CSS variables not @theme (complex value) */
+/* ============================================================
+   Light Mode Tokens — COMPONENTS_LIGHT.html design spec
+   Used by shape components (HubNode, BlogNode, etc.) via
+   unprefixed legacy var names in their inline styles.
+   ============================================================ */
+:root {
+  /* Canvas */
+  --canvas-bg: #FAFAFA;
+
+  /* Surface hierarchy (light — darker = elevated) */
+  --surface-dim:                #FFFFFF;
+  --surface-default:            #FAFAFA;
+  --surface-container-lowest:   #F5F5F5;
+  --surface-container-low:      #F0F0F0;
+  --surface-container:          #EBEBEB;
+  --surface-container-high:     #E5E5E5;
+  --surface-container-highest:  #E0E0E0;
+
+  /* Glassmorphism */
+  --glass-bg:     rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-blur:   20px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+
+  /* Text */
+  --text-primary:    #09090B;
+  --text-secondary:  #52525B;
+  --text-tertiary:   #71717A;
+  --text-quaternary: #A1A1AA;
+  --text-inverse:    #FAFAFA;
+
+  /* Borders */
+  --border-ghost:   rgba(0, 0, 0, 0.06);
+  --border-subtle:  rgba(0, 0, 0, 0.1);
+  --border-default: rgba(0, 0, 0, 0.15);
+  --border-strong:  rgba(0, 0, 0, 0.2);
+
+  /* Interactive — mauve palette */
+  --interactive-default:    #E0AFFF;
+  --interactive-hover:      #EAC7FF;
+  --interactive-active:     #D197FF;
+  --interactive-disabled:   #B380CC;
+  --interactive-bg-subtle:  rgba(224, 175, 255, 0.1);
+  --interactive-bg-medium:  rgba(224, 175, 255, 0.2);
+
+  /* Accent */
+  --accent-mauve:     #8B5CF6;
+  --accent-mauve-dim: rgba(139, 92, 246, 0.15);
+
+  /* Shadows */
+  --shadow-xs:  0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-sm:  0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-lg:  0 8px 24px rgba(0, 0, 0, 0.15);
+  --shadow-xl:  0 12px 40px rgba(0, 0, 0, 0.2);
+  --shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.3);
+
+  /* Typography */
+  --font-display: 'Noto Serif', Georgia, serif;
+  --font-heading: 'Noto Serif', Georgia, serif;
+  --font-body:    'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.25rem;
+  --text-2xl:  1.5rem;
+  --text-3xl:  1.875rem;
+  --text-4xl:  2.25rem;
+
+  --leading-tight:   1.25;
+  --leading-snug:    1.375;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.625;
+
+  /* Spacing */
+  --spacing-1:  0.25rem;
+  --spacing-2:  0.5rem;
+  --spacing-3:  0.75rem;
+  --spacing-4:  1rem;
+  --spacing-6:  1.5rem;
+  --spacing-8:  2rem;
+  --spacing-12: 3rem;
+
+  /* Radius */
+  --radius-sm:      0.125rem;
+  --radius-default: 0.25rem;
+  --radius-md:      0.375rem;
+  --radius-lg:      0.5rem;
+  --radius-xl:      0.75rem;
+  --radius-2xl:     1rem;
+  --radius-full:    9999px;
+
+  /* Motion */
+  --motion-hover: 150ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Glass utility */
 @layer utilities {
   .glass {
-    background: rgba(28, 28, 28, 0.7);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* Canvas light grid background */
+  .canvas-grid-light {
+    background-color: var(--canvas-bg);
+    background-image:
+      linear-gradient(var(--color-canvas-grid-line-strong) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-canvas-grid-line-strong) 1px, transparent 1px),
+      linear-gradient(var(--color-canvas-grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-canvas-grid-line) 1px, transparent 1px);
+    background-size:
+      var(--canvas-grid-size-lg) var(--canvas-grid-size-lg),
+      var(--canvas-grid-size-lg) var(--canvas-grid-size-lg),
+      var(--canvas-grid-size-sm) var(--canvas-grid-size-sm),
+      var(--canvas-grid-size-sm) var(--canvas-grid-size-sm);
+    background-position: center center;
   }
 }
 
@@ -180,7 +307,8 @@
   padding: 0;
 }
 
-html, body {
+html,
+body {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -192,8 +320,8 @@ body {
   font-family: var(--font-body);
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
-  color: var(--color-primary);
-  background: var(--color-canvas-bg);
+  color: var(--text-primary);
+  background: var(--canvas-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -204,7 +332,12 @@ body {
 }
 
 /* Typography Defaults */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-tight);
@@ -284,20 +417,35 @@ code {
 
 /* Animations */
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.4;
   }
+
   50% {
     opacity: 0.6;
   }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
