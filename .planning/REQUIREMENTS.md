@@ -1,9 +1,54 @@
 # Requirements: illulachy.me
 
-**Defined:** 2026-03-22
+**Defined:** 2026-03-28
 **Core Value:** The canvas must feel smooth and intuitive to explore — pan/zoom navigation works flawlessly, and the timeline layout clearly communicates my journey over time.
 
-## v1 Requirements
+## v1.1 Requirements
+
+Requirements for milestone v1.1: Turborepo + Blog Site. Each maps to roadmap phases.
+
+### Monorepo Infrastructure
+
+- [ ] **MONO-01**: Repository uses Turborepo + pnpm workspace structure with apps/ and packages/ directories
+- [ ] **MONO-02**: Portfolio app lives at apps/portfolio/ and builds/deploys as before
+- [ ] **MONO-03**: Shared content package (@illu/content) extracts markdown files, types, and generation scripts
+- [ ] **MONO-04**: Both portfolio and blog apps consume @illu/content via workspace:* dependency
+- [ ] **MONO-05**: All letters.illulachy.me references updated to writing.illulachy.me
+
+### Blog Content
+
+- [ ] **BLOG-01**: User can view a post list page with titles, dates, and excerpts in reverse-chronological order
+- [ ] **BLOG-02**: User can read a full blog post with rendered markdown (headings, code blocks, lists, links, images)
+- [ ] **BLOG-03**: Code blocks display syntax highlighting via Shiki (build-time, zero runtime JS)
+- [ ] **BLOG-04**: Each post displays estimated reading time
+
+### Taxonomy & Navigation
+
+- [ ] **TAX-01**: User can browse posts by category via category listing pages
+- [ ] **TAX-02**: User can browse posts by tag via tag listing pages
+- [ ] **TAX-03**: Blog has a navigation header linking to portfolio (illulachy.me) and blog index
+- [ ] **TAX-04**: Blog displays a styled 404 page for invalid URLs
+
+### SEO & Discovery
+
+- [ ] **SEO-01**: Blog generates an RSS feed at /rss.xml with post titles, dates, excerpts, and canonical URLs
+- [ ] **SEO-02**: Blog generates a sitemap at /sitemap.xml listing all post URLs
+- [ ] **SEO-03**: Each post page includes OG/meta tags (og:title, og:description, og:image) for social sharing
+- [ ] **SEO-04**: Each post page includes a canonical URL link tag
+
+### Visual Identity
+
+- [ ] **VIS-01**: Blog uses dark mode matching Catppuccin Mocha theme via Tailwind v4 @theme tokens
+- [ ] **VIS-02**: Blog has responsive prose layout (max-width ~65ch, fluid typography, mobile-first)
+
+### Search & Extras
+
+- [ ] **SRCH-01**: User can search blog posts via Pagefind (static build-time index, WASM query)
+- [ ] **SRCH-02**: Code blocks have a copy-to-clipboard button
+- [ ] **SRCH-03**: Long posts display a table of contents generated from headings
+- [ ] **SRCH-04**: Each blog post links back to its position on the canvas timeline ("See on timeline")
+
+## v1 Requirements (Previous Milestone — Complete)
 
 ### Canvas Foundation
 
@@ -25,15 +70,15 @@
 - [x] **TIME-01**: Timeline extends left from portfolio node
 - [x] **TIME-02**: Timeline nodes are positioned chronologically (oldest = farthest left)
 - [x] **TIME-03**: Most recent entries appear closest to portfolio hub
-- [ ] **TIME-04**: YouTube content displays as thumbnail node
-- [ ] **TIME-05**: Blog/note content displays as card node
-- [ ] **TIME-06**: Project content displays as card node
-- [ ] **TIME-07**: Milestone/education content displays as card node
+- [x] **TIME-04**: YouTube content displays as thumbnail node
+- [x] **TIME-05**: Blog/note content displays as card node
+- [x] **TIME-06**: Project content displays as card node
+- [x] **TIME-07**: Milestone/education content displays as card node
 
 ### Interactivity
 
 - [x] **INT-01**: User can click YouTube node to open video in YouTube
-- [x] **INT-02**: User can click blog/note node to open letters.illulachy.me
+- [x] **INT-02**: User can click blog/note node to open writing.illulachy.me
 - [x] **INT-03**: User can click project node to open external project URL
 - [x] **INT-04**: User can click milestone node to view details
 - [x] **INT-05**: Nodes have hover states showing they're clickable
@@ -64,24 +109,12 @@
 ### Technical Foundation
 
 - [x] **TECH-01**: Built with Vite + React 19 + TypeScript
-- [x] **TECH-02**: Infinite canvas powered by tldraw 4.5
+- [x] **TECH-02**: Infinite canvas powered by Konva.js
 - [x] **TECH-03**: Content parsing uses gray-matter + remark
 - [x] **TECH-04**: Site deploys as static SPA
 - [x] **TECH-05**: TypeScript types defined for all content structures
 
-## v2 Requirements
-
-### Monorepo & Blog
-
-- **MONO-01**: Turborepo + pnpm monorepo structure
-- **MONO-02**: Blog site at letters.illulachy.me integrated in monorepo
-- **MONO-03**: Shared content package between portfolio and blog
-
-### Search & Discovery
-
-- **SEARCH-01**: User can search timeline entries by keyword
-- **SEARCH-02**: User can filter timeline by content type
-- **SEARCH-03**: User can filter timeline by date range
+## Future Requirements
 
 ### Performance Optimization
 
@@ -93,19 +126,22 @@
 
 - **ENH-01**: Timeline nodes show preview on hover
 - **ENH-02**: Smooth transitions between timeline sections
-- **ENH-03**: Dark mode support
-- **ENH-04**: Timeline mini-map for navigation
+- **ENH-03**: Timeline mini-map for navigation
 
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
-| CMS or admin panel | Content managed via markdown in Git — simpler for single author |
-| Embedded video playback | Increases bundle size, slower on mobile — link to YouTube instead |
+| Comments section | Requires backend/moderation; single-author blog doesn't need it — link to Twitter/X instead |
+| CMS or admin panel | Git + markdown workflow works for developer author |
+| Email newsletter | Requires email service + GDPR compliance; RSS covers subscribe use case |
+| Server-side rendering | Static generation gives same SEO benefits with simpler hosting |
+| Infinite scroll | Breaks browser history/back button; simple pagination or show all |
+| Social sharing buttons | Large JS payload; OG tags make native sharing look great |
+| View counters | Adds JS payload + external calls; use Vercel analytics if needed |
 | Real-time collaboration | No use case — single-author portfolio |
-| Server-side rendering | Canvas is client-only, SSR adds complexity with no SEO benefit |
-| Authentication | Public portfolio site, no login needed |
-| Advanced analytics | Web Vitals sufficient for v1, defer heatmaps/session replay |
+| Embedded video playback | Link to YouTube instead — simpler |
+| Authentication | Public site, no login needed |
 
 ## Traceability
 
@@ -113,52 +149,35 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CANVAS-01 | Phase 1 | Complete ✓ |
-| CANVAS-02 | Phase 1 | Complete ✓ |
-| CANVAS-03 | Phase 1 | Complete ✓ |
-| CANVAS-04 | Phase 1 | Complete ✓ |
-| CANVAS-05 | Phase 1 | Complete ✓ |
-| CANVAS-06 | Phase 1 | Complete ✓ |
-| HUB-01 | Phase 3 | Complete |
-| HUB-02 | Phase 3 | Complete |
-| HUB-03 | Phase 3 | Complete |
-| TIME-01 | Phase 4 | Complete |
-| TIME-02 | Phase 4 | Complete |
-| TIME-03 | Phase 4 | Complete |
-| TIME-04 | Phase 4 | Pending |
-| TIME-05 | Phase 4 | Pending |
-| TIME-06 | Phase 4 | Pending |
-| TIME-07 | Phase 4 | Pending |
-| INT-01 | Phase 3 | Complete |
-| INT-02 | Phase 3 | Complete |
-| INT-03 | Phase 3 | Complete |
-| INT-04 | Phase 3 | Complete |
-| INT-05 | Phase 3 | Complete |
-| GAME-01 | Phase 6 | Complete |
-| GAME-02 | Phase 6 | Complete |
-| GAME-03 | Phase 6 | Complete |
-| GAME-04 | Phase 6 | Complete |
-| CONTENT-01 | Phase 2 | Complete |
-| CONTENT-02 | Phase 2 | Complete |
-| CONTENT-03 | Phase 2 | Complete |
-| CONTENT-04 | Phase 2 | Complete |
-| CONTENT-05 | Phase 2 | Complete |
-| UI-01 | Phase 5 | Complete |
-| UI-02 | Phase 5 | Complete |
-| UI-03 | Phase 5 | Complete |
-| UI-04 | Phase 5 | Complete |
-| UI-05 | Phase 5 | Complete |
-| TECH-01 | Phase 1 | Complete ✓ |
-| TECH-02 | Phase 1 | Complete ✓ |
-| TECH-03 | Phase 2 | Complete |
-| TECH-04 | Phase 1 | Complete ✓ |
-| TECH-05 | Phase 1 | Complete ✓ |
+| MONO-01 | TBD | Pending |
+| MONO-02 | TBD | Pending |
+| MONO-03 | TBD | Pending |
+| MONO-04 | TBD | Pending |
+| MONO-05 | TBD | Pending |
+| BLOG-01 | TBD | Pending |
+| BLOG-02 | TBD | Pending |
+| BLOG-03 | TBD | Pending |
+| BLOG-04 | TBD | Pending |
+| TAX-01 | TBD | Pending |
+| TAX-02 | TBD | Pending |
+| TAX-03 | TBD | Pending |
+| TAX-04 | TBD | Pending |
+| SEO-01 | TBD | Pending |
+| SEO-02 | TBD | Pending |
+| SEO-03 | TBD | Pending |
+| SEO-04 | TBD | Pending |
+| VIS-01 | TBD | Pending |
+| VIS-02 | TBD | Pending |
+| SRCH-01 | TBD | Pending |
+| SRCH-02 | TBD | Pending |
+| SRCH-03 | TBD | Pending |
+| SRCH-04 | TBD | Pending |
 
 **Coverage:**
-- v1 requirements: 34 total
-- Mapped to phases: 34 ✓
-- Unmapped: 0 ✓
+- v1.1 requirements: 23 total
+- Mapped to phases: 0
+- Unmapped: 23 ⚠️
 
 ---
-*Requirements defined: 2026-03-22*
-*Last updated: 2026-03-22 after initial definition*
+*Requirements defined: 2026-03-28*
+*Last updated: 2026-03-28 after initial definition*
