@@ -24,7 +24,7 @@ The canvas must feel smooth and intuitive to explore — pan/zoom navigation wor
 - [x] Central portfolio node (16:9) displaying an "about me" section
 - [x] Content nodes as clickable cards — click to open external links
 - [x] YouTube nodes link to YouTube
-- [x] Blog/note nodes link to letters.illulachy.me
+- [x] Blog/note nodes link to writing.illulachy.me
 - [x] Project nodes link to external project URLs
 
 **Phase 4 (Timeline Layout):**
@@ -37,9 +37,17 @@ The canvas must feel smooth and intuitive to explore — pan/zoom navigation wor
 - [x] Responsive layout (mobile and desktop)
 - [x] Loading spinner with exit animation
 
+**Phase 6 (Game Mode):**
+- [x] G key toggle for game mode with spaceship cursor
+- [x] Momentum-based physics with arrow key navigation
+- [x] Camera follow with smooth lerp tracking
+- [x] Visual indicator (mauve border glow) when game mode active
+
 ### Active
-- [ ] "Game mode" — hotkey switches to spaceship cursor, arrow key navigation through timeline
-- [ ] Monorepo structure: portfolio site (illulachy.me) + blog site (letters.illulachy.me)
+- [ ] Turborepo + pnpm monorepo structure (portfolio app + blog app + shared content package)
+- [ ] Full blog site at writing.illulachy.me with categories, tags, RSS feed, and search
+- [ ] Shared content workspace package consumed by both portfolio and blog
+- [ ] Update all writing.illulachy.me references to writing.illulachy.me
 
 ### Out of Scope
 
@@ -48,6 +56,16 @@ The canvas must feel smooth and intuitive to explore — pan/zoom navigation wor
 - Embedded video playback — link out to YouTube instead (simpler)
 - Real-time collaboration features — single-author site
 - Authentication — public site, no login needed
+
+## Current Milestone: v1.1 Turborepo + Blog Site
+
+**Goal:** Convert the repo into a Turborepo monorepo and add a full blog site at writing.illulachy.me, sharing content via a workspace package.
+
+**Target features:**
+- Turborepo + pnpm monorepo structure (portfolio app + blog app + shared content package)
+- Full blog site at writing.illulachy.me with categories, tags, RSS feed, and search
+- Shared content workspace package consumed by both portfolio and blog
+- Update all writing.illulachy.me references to writing.illulachy.me
 
 ## Context
 
@@ -63,11 +81,12 @@ The canvas must feel smooth and intuitive to explore — pan/zoom navigation wor
 - Motion.dev for animations and transitions
 - Markdown for content authoring
 - Vite for build tooling
-- Monorepo structure (portfolio + blog)
+- Turborepo + pnpm for monorepo orchestration
+- Blog site at writing.illulachy.me (full blog with categories, tags, RSS, search)
 
 **Content Types:**
 - **YouTube videos:** Display thumbnail, link to YouTube when clicked
-- **Blog posts/notes:** Display card, link to letters.illulachy.me when clicked
+- **Blog posts/notes:** Display card, link to writing.illulachy.me when clicked
 - **Projects:** Display thumbnail/card, link to external project URL
 - **Education/milestones:** Display card with details
 - **Work experience:** Display card with details
@@ -91,8 +110,26 @@ The canvas must feel smooth and intuitive to explore — pan/zoom navigation wor
 |----------|-----------|---------|
 | Use tldraw for canvas | Mature library with built-in pan/zoom, handles performance | — Pending |
 | External links for content | Simplifies v1 — no modal/overlay complexity | — Pending |
-| Monorepo structure | Portfolio and blog share repo, different deployment targets | — Pending |
+| Turborepo + pnpm monorepo | Portfolio and blog share repo with shared content package, different deployment targets | — Pending |
+| writing.illulachy.me subdomain | Replaces letters.illulachy.me for blog | — Pending |
 | Game mode with spaceship | Adds personality and playful interaction to exploration | — Pending |
 
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd:transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd:complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
 ---
-*Last updated: 2026-03-23 after Phase 5 completion*
+*Last updated: 2026-03-28 after milestone v1.1 started*
