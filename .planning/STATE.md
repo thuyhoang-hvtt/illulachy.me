@@ -2,13 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Turborepo + Blog Site
-status: active
-last_updated: "2026-03-28"
+status: planning
+last_updated: "2026-03-29T01:39:09.452Z"
+last_activity: 2026-03-28 — v1.1 roadmap created (Phases 7-10)
 progress:
-  total_phases: 4
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_phases: 10
+  completed_phases: 6
+  total_plans: 12
+  completed_plans: 11
+  percent: 0
 ---
 
 # Project State: illulachy.me
@@ -35,6 +37,7 @@ Progress: [░░░░░░░░░░] 0% (v1.1 milestone)
 ## Performance Metrics
 
 **Velocity:**
+
 - Total plans completed: 0 (v1.1)
 - Average duration: — (no data yet)
 - Total execution time: —
@@ -46,6 +49,7 @@ Progress: [░░░░░░░░░░] 0% (v1.1 milestone)
 | - | - | - | - |
 
 *Updated after each plan completion*
+| Phase 07-monorepo-scaffold P01 | 3m | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -57,6 +61,9 @@ Progress: [░░░░░░░░░░] 0% (v1.1 milestone)
 - Turborepo 2.8.x + pnpm 9.x for monorepo orchestration
 - writing.illulachy.me replaces letters.illulachy.me everywhere
 - Blog deploys as separate Vercel project from same repo root
+- [Phase 07-monorepo-scaffold]: Turborepo v2 tasks key (not pipeline) for build/dev/lint/test task graph
+- [Phase 07-monorepo-scaffold]: REPO_ROOT computed 3 levels up from apps/portfolio/src/ for content path resolution
+- [Phase 07-monorepo-scaffold]: pnpm strict mode with onlyBuiltDependencies for fsevents and esbuild
 
 ### Pending Todos
 
@@ -70,8 +77,9 @@ None yet.
 
 ## Session Continuity
 
-**Last session:** 2026-03-28
+**Last session:** 2026-03-29T01:39:09.449Z
 **Completed:** v1.1 roadmap created — 4 phases (7-10), 23 requirements mapped
+**Resumed:** 2026-03-28 — proceeding to plan Phase 7 (CONTEXT.md exists)
 **Resume file:** None
 
 ---
