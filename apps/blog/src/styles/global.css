@@ -52,6 +52,8 @@
   font-family: var(--font-mono);
   font-size: 0.875rem;
   line-height: 1.625;
+  overflow: auto;
+  white-space: pre;
 }
 
 /* Inline code (per UI-SPEC) */
