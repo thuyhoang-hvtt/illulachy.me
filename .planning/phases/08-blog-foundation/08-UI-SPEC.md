@@ -59,14 +59,18 @@ Four roles declared. Two weights max (regular 400 + semibold 600).
 
 | Role | Font | Size | Weight | Line Height | Letter Spacing | Usage |
 |------|------|------|--------|-------------|----------------|-------|
-| Display | Noto Serif | 48px (`--text-5xl`) | 700 (bold) | 1.2 (`--leading-tight`) | -0.05em (`--tracking-tighter`) | Page-level blog title only (site name in header) |
-| Heading | Noto Serif | 30px (`--text-3xl`) — 36px (`--text-4xl`) | 600 (semibold) | 1.25 (`--leading-tight`) | -0.025em (`--tracking-tight`) | Post list titles (h2); post page h1 at 36px, h2–h3 at 30px |
+| Display | Noto Serif | 48px (`--text-5xl`) | 600 (semibold) | 1.2 (`--leading-tight`) | -0.05em (`--tracking-tighter`) | Page-level blog title only (site name in header) |
+| Heading | Noto Serif | 36px (`--text-4xl`) | 600 (semibold) | 1.25 (`--leading-tight`) | -0.025em (`--tracking-tight`) | Post list titles (h2); post page h1; prose h2–h3 inherit from `.prose` plugin defaults |
 | Body | Space Grotesk | 16px (`--text-base`) | 400 (regular) | 1.5 (`--leading-normal`) | 0 | Post excerpts on list page; full post prose body |
 | Label | Space Grotesk | 14px (`--text-sm`) | 400 (regular) | 1.5 (`--leading-normal`) | 0.025em (`--tracking-wide`) | Dates, reading time, category tags, metadata row |
 
-Additional: Code blocks use JetBrains Mono at 14px (`--text-sm`), weight 400, line-height 1.625 (`--leading-relaxed`).
+Declared size scale (4 values): 14px, 16px, 36px, 48px.
+
+Additional: Code blocks use JetBrains Mono at 14px (`--text-sm`), weight 400, line-height 1.625 (`--leading-relaxed`). This reuses the Label size token — no fifth size value is introduced.
 
 Fluid typography: The display heading only uses `clamp()`. All other sizes are fixed px values — Tailwind v4 utility classes applied, not CSS clamp, for body/label/heading in blog context.
+
+Prose headings (h2–h3 inside post body): inherit from `@tailwindcss/typography` `.prose` plugin defaults. No additional declared size token is added; executor must not introduce new px values beyond the 4-size scale above.
 
 Source: apps/portfolio/src/index.css typography section, CONTEXT.md D-08, DESIGN.md §3
 
@@ -130,8 +134,10 @@ No third-party UI component library. All components are Astro `.astro` files.
 
 Visual reference: `.stich/layout.jpeg` (CONTEXT.md D-14)
 
+Primary visual anchor: post title (Noto Serif Heading role, left column top) — largest element per row, first point of eye contact.
+
 Each PostCard row:
-- **Left column (flex-1):** Post title (Heading role, Noto Serif 30px semibold), excerpt (Body role, Space Grotesk 16px, 2 lines max, `line-clamp-2`), metadata row (Label role: date — reading time — category tag pill)
+- **Left column (flex-1):** Post title (Heading role, Noto Serif 36px semibold), excerpt (Body role, Space Grotesk 16px, 2 lines max, `line-clamp-2`), metadata row (Label role: date — reading time — category tag pill)
 - **Right column (fixed width 120–160px):** Square or 16:9 thumbnail image. When no thumbnail image exists, column collapses (no placeholder box)
 - **Row interaction:** On hover, background shifts from `surface-default` (#131313) to `surface-container-low` (#1C1C1C). Transition: 150ms ease-out. No shadow change, no border appears.
 - **Row separation:** 32px (`--spacing-8`) vertical gap between rows. No divider lines.
