@@ -28,3 +28,6 @@ dist-ssr
 
 # Turborepo
 .turbo
+
+# Astro generated
+.astro
