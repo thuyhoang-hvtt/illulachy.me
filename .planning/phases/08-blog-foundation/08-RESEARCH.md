@@ -70,7 +70,7 @@
 
 ## Summary
 
-Phase 8 builds a complete Astro 6 blog at writing.illulachy.me. The primary technical challenge is loading markdown content from `packages/content/content/posts/` (outside the blog app's directory) into Astro pages. Decision D-04 locks this to `import.meta.glob()` — not Astro content collections. This is achievable via Vite's glob with a literal path that traverses up the monorepo (`../../../packages/content/content/posts/**/*.md`) relative to the Astro page file location. The glob must be a string literal; no dynamic construction.
+Phase 8 builds a complete Astro 6 blog at writing.illulachy.me. The primary technical challenge is loading markdown content from `packages/content/content/posts/` (outside the blog app's directory) into Astro pages. Decision D-04 locks this to `import.meta.glob()` — not Astro content collections. This is achievable via Vite's glob with a literal path that traverses up the monorepo (`../../../../packages/content/content/posts/**/*.md`) relative to the Astro page file location. The glob must be a string literal; no dynamic construction.
 
 The design system side is well-defined: extract CSS custom properties from `.stich/visual/COMPONENTS.html` (dark) and `COMPONENTS_LIGHT.html` (light) into a new `packages/tokens/` package as a single CSS file containing a Tailwind v4 `@theme` block. Both apps import this file. Dark/light switching uses `@media (prefers-color-scheme: light)` to override the default-dark tokens — no JavaScript required.
 
@@ -177,7 +177,7 @@ apps/
 
 **When to use:** All post loading in both `index.astro` and `[slug].astro`.
 
-**How it works:** From `apps/blog/src/pages/index.astro`, the path `../../../packages/content/content/posts/**/*.md` navigates: `src/pages/` → `src/` → `apps/blog/` → `apps/` → repo root → down into `packages/content/content/posts/`. Vite resolves this statically at build time.
+**How it works:** From `apps/blog/src/pages/index.astro`, the path `../../../../packages/content/content/posts/**/*.md` navigates: `src/pages/` → `src/` → `apps/blog/` → `apps/` → repo root (4 levels) → down into `packages/content/content/posts/`. Vite resolves this statically at build time.
 
 **Critical constraint:** Pattern MUST be a **string literal**. No template strings, no variables. Vite statically analyzes glob patterns at compile time.
 
@@ -187,13 +187,13 @@ apps/
 
 // For list page — only frontmatter needed, default module mode
 const postModules = import.meta.glob(
-  '../../../packages/content/content/posts/**/*.md',
+  '../../../../packages/content/content/posts/**/*.md',
   { eager: true }
 )
 
 // For post route — raw string needed to parse body
 const rawFiles = import.meta.glob(
-  '../../../packages/content/content/posts/**/*.md',
+  '../../../../packages/content/content/posts/**/*.md',
   { eager: true, as: 'raw' }
 )
 ```
@@ -217,7 +217,7 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import PostCard from '../components/PostCard.astro'
 
 const postModules = import.meta.glob(
-  '../../../packages/content/content/posts/**/*.md',
+  '../../../../packages/content/content/posts/**/*.md',
   { eager: true }
 )
 
@@ -270,7 +270,7 @@ import PostLayout from '../../layouts/PostLayout.astro'
 
 export async function getStaticPaths() {
   const rawFiles = import.meta.glob(
-    '../../../packages/content/content/posts/**/*.md',
+    '../../../../packages/content/content/posts/**/*.md',
     { eager: true, as: 'raw' }
   )
   return Object.entries(rawFiles).map(([path, raw]) => ({
@@ -512,7 +512,7 @@ export default defineConfig({
 
 **Why it happens:** Vite statically analyzes glob patterns at compile time. Dynamic construction is impossible.
 
-**How to avoid:** Write the full literal string in source code. The `../../../` depth looks verbose but is correct.
+**How to avoid:** Write the full literal string in source code. The `../../../../` depth looks verbose but is correct.
 
 **Warning signs:** Empty `posts` array on list page; Vite build error mentioning glob.
 

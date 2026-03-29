@@ -38,7 +38,7 @@ Requirements for milestone v1.1: Turborepo + Blog Site. Each maps to roadmap pha
 
 ### Visual Identity
 
-- [ ] **VIS-01**: Blog uses dark mode matching Catppuccin Mocha theme via Tailwind v4 @theme tokens
+- [ ] **VIS-01**: Blog uses dark mode matching Stitch design system palette (charcoal + white + mauve) via Tailwind v4 @theme tokens (Note: original spec referenced Catppuccin Mocha; superseded by .stich/DESIGN.md custom palette per CONTEXT.md D-05)
 - [ ] **VIS-02**: Blog has responsive prose layout (max-width ~65ch, fluid typography, mobile-first)
 
 ### Search & Extras
