@@ -25,7 +25,7 @@
 
 ### 🚧 v1.1 Turborepo + Blog Site (In Progress)
 
-- [ ] **Phase 7: Monorepo Scaffold** - Turborepo + pnpm monorepo with portfolio migrated and shared content package wired
+- [x] **Phase 7: Monorepo Scaffold** - Turborepo + pnpm monorepo with portfolio migrated and shared content package wired (completed 2026-03-29)
 - [ ] **Phase 8: Blog Foundation** - Readable Astro blog with post list, individual posts, syntax highlighting, and dark mode
 - [ ] **Phase 9: Discovery and SEO** - Categories, tags, RSS, sitemap, OG meta tags, and navigation
 - [ ] **Phase 10: Search and Extras** - Pagefind search, copy-code button, table of contents, and canvas backlink
@@ -137,7 +137,11 @@ Plans:
   3. `@illu/content` package exists at packages/content/ and the portfolio declares it as a `workspace:*` dependency
   4. All letters.illulachy.me references in source code, content files, and portfolio node links are updated to writing.illulachy.me
   5. pnpm-lock.yaml replaces any previous lockfile; no phantom dependency errors from pnpm strict mode
-**Plans:** TBD
+**Plans:** 2/2 plans complete
+
+Plans:
+- [x] 07-01-PLAN.md — Monorepo root scaffold (turbo.json, pnpm-workspace.yaml, .npmrc) + git mv portfolio to apps/portfolio/ + fix path references (MONO-01, MONO-02)
+- [x] 07-02-PLAN.md — Extract @illu/content shared package + scaffold Astro blog placeholder at apps/blog/ + update letters.illulachy.me to writing.illulachy.me (MONO-03, MONO-04, MONO-05)
 
 ### Phase 8: Blog Foundation
 **Goal:** A readable blog at writing.illulachy.me where users can browse posts and read full articles with syntax highlighting
@@ -189,7 +193,7 @@ Plans:
 | 4. Timeline Layout | v1.0 | 2/2 | Complete | 2026-03-23 |
 | 5. UI Chrome | v1.0 | 2/2 | Complete | 2026-03-23 |
 | 6. Game Mode | v1.0 | 1/1 | Complete | 2026-03-28 |
-| 7. Monorepo Scaffold | v1.1 | 0/? | Not started | - |
+| 7. Monorepo Scaffold | v1.1 | 2/2 | Complete   | 2026-03-29 |
 | 8. Blog Foundation | v1.1 | 0/? | Not started | - |
 | 9. Discovery and SEO | v1.1 | 0/? | Not started | - |
 | 10. Search and Extras | v1.1 | 0/? | Not started | - |
@@ -202,4 +206,4 @@ Plans:
 
 ---
 *Roadmap created: 2025-01-19*
-*Last updated: 2026-03-28 after v1.1 roadmap added (Phases 7-10)*
+*Last updated: 2026-03-28 after Phase 7 planning (2 plans created)*

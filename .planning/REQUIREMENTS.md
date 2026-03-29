@@ -9,11 +9,11 @@ Requirements for milestone v1.1: Turborepo + Blog Site. Each maps to roadmap pha
 
 ### Monorepo Infrastructure
 
-- [ ] **MONO-01**: Repository uses Turborepo + pnpm workspace structure with apps/ and packages/ directories
-- [ ] **MONO-02**: Portfolio app lives at apps/portfolio/ and builds/deploys as before
-- [ ] **MONO-03**: Shared content package (@illu/content) extracts markdown files, types, and generation scripts
-- [ ] **MONO-04**: Both portfolio and blog apps consume @illu/content via workspace:* dependency
-- [ ] **MONO-05**: All letters.illulachy.me references updated to writing.illulachy.me
+- [x] **MONO-01**: Repository uses Turborepo + pnpm workspace structure with apps/ and packages/ directories
+- [x] **MONO-02**: Portfolio app lives at apps/portfolio/ and builds/deploys as before
+- [x] **MONO-03**: Shared content package (@illu/content) extracts markdown files, types, and generation scripts
+- [x] **MONO-04**: Both portfolio and blog apps consume @illu/content via workspace:* dependency
+- [x] **MONO-05**: All letters.illulachy.me references updated to writing.illulachy.me
 
 ### Blog Content
 
@@ -147,11 +147,11 @@ Requirements for milestone v1.1: Turborepo + Blog Site. Each maps to roadmap pha
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| MONO-01 | Phase 7 | Pending |
-| MONO-02 | Phase 7 | Pending |
-| MONO-03 | Phase 7 | Pending |
-| MONO-04 | Phase 7 | Pending |
-| MONO-05 | Phase 7 | Pending |
+| MONO-01 | Phase 7 | Complete |
+| MONO-02 | Phase 7 | Complete |
+| MONO-03 | Phase 7 | Complete |
+| MONO-04 | Phase 7 | Complete |
+| MONO-05 | Phase 7 | Complete |
 | BLOG-01 | Phase 8 | Pending |
 | BLOG-02 | Phase 8 | Pending |
 | BLOG-03 | Phase 8 | Pending |
