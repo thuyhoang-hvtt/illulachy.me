@@ -29,7 +29,7 @@ export function updatePhysics(
   deltaTime: number // seconds
 ): PhysicsState {
   const dt = deltaTime
-  const { ACCELERATION, MAX_VELOCITY, FRICTION, ROTATION_SPEED } = PHYSICS_CONSTANTS
+  const { ACCELERATION, MAX_VELOCITY, FRICTION } = PHYSICS_CONSTANTS
   
   // Apply input acceleration
   let ax = 0

@@ -4,8 +4,8 @@ import fg from 'fast-glob'
 import { z } from 'zod'
 import { readFile, writeFile, mkdir } from 'fs/promises'
 import { basename, dirname } from 'path'
-import type { ContentNode, TimelineData } from '../src/types/content.js'
-import { aboutSchema, type AboutData } from '../src/types/about.js'
+import type { ContentNode, TimelineData } from '../apps/portfolio/src/types/content.js'
+import { aboutSchema, type AboutData } from '../apps/portfolio/src/types/about.js'
 
 // Zod schema for frontmatter validation
 const frontmatterSchema = z.object({
@@ -168,11 +168,11 @@ async function main() {
     }
     
     // Ensure output directory exists
-    await mkdir('public', { recursive: true })
-    
-    // Write to public/timeline.json (pretty-printed)
+    await mkdir('apps/portfolio/public', { recursive: true })
+
+    // Write to apps/portfolio/public/timeline.json (pretty-printed)
     await writeFile(
-      'public/timeline.json',
+      'apps/portfolio/public/timeline.json',
       JSON.stringify(timelineData, null, 2),
       'utf-8'
     )
@@ -184,7 +184,7 @@ async function main() {
     const aboutData = await processAboutFile()
     
     await writeFile(
-      'public/about.json',
+      'apps/portfolio/public/about.json',
       JSON.stringify(aboutData, null, 2),
       'utf-8'
     )
