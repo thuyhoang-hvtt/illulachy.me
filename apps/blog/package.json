@@ -6,10 +6,20 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "test": "vitest run"
   },
   "dependencies": {
     "@illu/content": "workspace:*",
-    "astro": "^6.1.1"
+    "@illu/tokens": "workspace:*",
+    "astro": "^6.1.1",
+    "@tailwindcss/vite": "^4.2.2",
+    "@tailwindcss/typography": "^0.5.19",
+    "gray-matter": "^4.0.3",
+    "@shikijs/rehype": "latest"
+  },
+  "devDependencies": {
+    "vitest": "^3.1.0",
+    "tailwindcss": "^4.0.0"
   }
 }
