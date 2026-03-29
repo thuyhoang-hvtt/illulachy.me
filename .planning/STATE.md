@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Turborepo + Blog Site
 status: planning
-last_updated: "2026-03-29T01:39:09.452Z"
+last_updated: "2026-03-29T01:45:52.092Z"
 last_activity: 2026-03-28 — v1.1 roadmap created (Phases 7-10)
 progress:
   total_phases: 10
-  completed_phases: 6
+  completed_phases: 7
   total_plans: 12
-  completed_plans: 11
+  completed_plans: 12
   percent: 0
 ---
 
@@ -50,6 +50,7 @@ Progress: [░░░░░░░░░░] 0% (v1.1 milestone)
 
 *Updated after each plan completion*
 | Phase 07-monorepo-scaffold P01 | 3m | 2 tasks | 8 files |
+| Phase 07-monorepo-scaffold P02 | 12m | 2 tasks | 22 files |
 
 ## Accumulated Context
 
@@ -64,6 +65,8 @@ Progress: [░░░░░░░░░░] 0% (v1.1 milestone)
 - [Phase 07-monorepo-scaffold]: Turborepo v2 tasks key (not pipeline) for build/dev/lint/test task graph
 - [Phase 07-monorepo-scaffold]: REPO_ROOT computed 3 levels up from apps/portfolio/src/ for content path resolution
 - [Phase 07-monorepo-scaffold]: pnpm strict mode with onlyBuiltDependencies for fsevents and esbuild
+- [Phase 07-monorepo-scaffold]: Proxy re-export files in portfolio/src/types/ preserve backward compat for 8+ importing components
+- [Phase 07-monorepo-scaffold]: tsconfig path alias for @illu/content required for JIT TypeScript resolution
 
 ### Pending Todos
 
@@ -77,7 +80,7 @@ None yet.
 
 ## Session Continuity
 
-**Last session:** 2026-03-29T01:39:09.449Z
+**Last session:** 2026-03-29T01:45:52.089Z
 **Completed:** v1.1 roadmap created — 4 phases (7-10), 23 requirements mapped
 **Resumed:** 2026-03-28 — proceeding to plan Phase 7 (CONTEXT.md exists)
 **Resume file:** None
