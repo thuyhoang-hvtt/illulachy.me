@@ -10,6 +10,8 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.2",
     "@illu/content": "workspace:*",
     "@illu/tokens": "workspace:*",
     "@shikijs/rehype": "latest",
