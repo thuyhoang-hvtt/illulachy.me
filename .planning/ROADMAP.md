@@ -178,7 +178,7 @@ Plans:
 
 Plans:
 - [x] 09-01-PLAN.md — Nav component, BaseLayout OG/meta extension, PostCard category links, slugify utility with tests, 404 page, OG image asset (TAX-03, TAX-04, SEO-03, SEO-04)
-- [ ] 09-02-PLAN.md — Category listing pages, tag listing pages, RSS feed endpoint with tests, sitemap integration (TAX-01, TAX-02, SEO-01, SEO-02)
+- [x] 09-02-PLAN.md — Category listing pages, tag listing pages, RSS feed endpoint with tests, sitemap integration (TAX-01, TAX-02, SEO-01, SEO-02)
 
 **UI hint**: yes
 
