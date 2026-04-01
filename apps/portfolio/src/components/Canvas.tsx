@@ -28,12 +28,12 @@ const HUB_HALF_WIDTH = 440  // Half of 880px hub width
 const NODE_HALF_HEIGHT = 100 // Half of 200px node height
 const AXIS_LEFT_EXTENT = -10000
 // Zoom threshold at which date labels fade in (0 = hidden, 1 = fully visible)
-const DATE_LABEL_ZOOM_START = 0.5
+const DATE_LABEL_ZOOM_START = 0.7
 const DATE_LABEL_ZOOM_END = 0.9
 
 function formatNodeDate(iso: string): string {
   const d = new Date(iso)
-  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+  return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })
 }
 
 // Node component mapping
@@ -209,9 +209,10 @@ export function Canvas() {
               const labelOpacity = Math.max(0, Math.min(1,
                 (zoom - DATE_LABEL_ZOOM_START) / (DATE_LABEL_ZOOM_END - DATE_LABEL_ZOOM_START)
               ))
-              const fontSize = 11 / zoom
+              const fontSize = 10 / zoom
               // Place label below axis for nodes above, above axis for nodes below
-              const labelY = y >= 0 ? 6 / zoom : -(6 / zoom) - fontSize
+              const labelX = x + 24 / zoom;
+              const labelY = y >= 0 ? 12 / zoom : -(12 / zoom) - fontSize
               return (
                 <>
                   <Line
@@ -225,13 +226,13 @@ export function Canvas() {
                     key={`dot-${node.id}`}
                     x={x}
                     y={0}
-                    radius={3}
+                    radius={2}
                     fill={AXIS_COLOR}
                     strokeScaleEnabled={false}
                   />
                   <Text
                     key={`label-${node.id}`}
-                    x={x}
+                    x={labelX}
                     y={labelY}
                     text={formatNodeDate(node.date)}
                     fontSize={fontSize}
