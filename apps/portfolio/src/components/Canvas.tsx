@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
-import { Stage, Layer } from 'react-konva'
+import { Stage, Layer, Line } from 'react-konva'
 import type Konva from 'konva'
 import type { KonvaEventObject } from 'konva/lib/Node'
 import { AnimatePresence, motion } from 'motion/react'
@@ -7,7 +7,6 @@ import { CanvasLoader } from './CanvasLoader'
 // import { CanvasControls } from './CanvasControls'
 // import { CanvasFogOverlay } from './CanvasFogOverlay'
 import { MilestoneModal } from './MilestoneModal'
-import { TimelineOverlay } from './TimelineOverlay'
 import { HubNode, YouTubeNode, BlogNode, ProjectNode, MilestoneNode } from './shapes'
 import { SpaceshipCursor } from './SpaceshipCursor'
 import { useCameraState } from '@/hooks/useCameraState'
@@ -17,11 +16,17 @@ import { useSpaceshipPhysics } from '@/hooks/useSpaceshipPhysics'
 // import { useControlsVisibility } from '@/hooks/useControlsVisibility'
 import { useTimelineData } from '@/hooks/useTimelineData'
 import { useAboutData } from '@/hooks/useAboutData'
-import { useViewportTransform } from '@/hooks/useViewportTransform'
 import { calculateInitialZoom, getViewportDimensions } from '@/lib/cameraUtils'
 import { positionTimelineNodes, HUB_POSITION } from '@/lib/positionNodes'
 import { ZOOM_MIN, ZOOM_MAX } from '@/types/camera'
 import type { ContentNode } from '@/types/content'
+
+// Timeline visual constants
+const AXIS_COLOR = 'rgba(255, 255, 255, 0.15)'
+const CONNECTOR_COLOR = 'rgba(255, 255, 255, 0.12)'
+const HUB_HALF_WIDTH = 440  // Half of 880px hub width
+const NODE_HALF_HEIGHT = 100 // Half of 200px node height
+const AXIS_LEFT_EXTENT = -10000
 
 // Node component mapping
 const nodeComponents: Record<string, React.ComponentType<any>> = {
@@ -45,9 +50,6 @@ export function Canvas() {
     if (!timelineData) return []
     return positionTimelineNodes(timelineData.nodes)
   }, [timelineData])
-  
-  // Get viewport transform for SVG overlay
-  const viewportTransform = useViewportTransform(stageRef.current)
   
   // Game mode state and physics
   const { isGameMode } = useGameMode()
@@ -180,6 +182,28 @@ export function Canvas() {
           onDragEnd={handleDragEnd}
         >
           <Layer>
+            {/* Timeline axis — horizontal line at y=0, extends left from hub */}
+            <Line
+              points={[AXIS_LEFT_EXTENT, 0, HUB_POSITION.x - HUB_HALF_WIDTH, 0]}
+              stroke={AXIS_COLOR}
+              strokeWidth={1}
+              strokeScaleEnabled={false}
+            />
+
+            {/* Connector lines — from each node's nearest edge to y=0 */}
+            {positionedNodes.map(({ node, x, y }) => {
+              const edgeY = y > 0 ? y - NODE_HALF_HEIGHT : y + NODE_HALF_HEIGHT
+              return (
+                <Line
+                  key={`connector-${node.id}`}
+                  points={[x, edgeY, x, 0]}
+                  stroke={CONNECTOR_COLOR}
+                  strokeWidth={1}
+                  strokeScaleEnabled={false}
+                />
+              )
+            })}
+
             {/* Hub node */}
             {aboutData && (
               <HubNode
@@ -194,7 +218,7 @@ export function Canvas() {
                 social={aboutData.social}
               />
             )}
-            
+
             {/* Timeline nodes */}
             {positionedNodes.map(({ node, x, y }) => {
               const NodeComponent = nodeComponents[node.type]
@@ -224,14 +248,6 @@ export function Canvas() {
       
       {/* Fog overlay (above canvas, below controls) */}
       {/* <CanvasFogOverlay /> */}
-      {/* Timeline overlay */}
-      {isFullyLoaded && positionedNodes.length > 0 && (
-        <TimelineOverlay 
-          nodes={positionedNodes}
-          hubX={HUB_POSITION.x}
-          viewportTransform={viewportTransform}
-        />
-      )}
       {/* Controls with contextual visibility - TEMPORARILY DISABLED */}
       {/* {isFullyLoaded && <CanvasControls editor={stageRef.current} visible={visible} />} */}
       {/* Milestone modal */}
