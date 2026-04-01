@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
-import { Stage, Layer } from 'react-konva'
+import { Stage, Layer, Line, Circle, Text } from 'react-konva'
 import type Konva from 'konva'
 import type { KonvaEventObject } from 'konva/lib/Node'
 import { AnimatePresence, motion } from 'motion/react'
@@ -7,7 +7,6 @@ import { CanvasLoader } from './CanvasLoader'
 // import { CanvasControls } from './CanvasControls'
 // import { CanvasFogOverlay } from './CanvasFogOverlay'
 import { MilestoneModal } from './MilestoneModal'
-import { TimelineOverlay } from './TimelineOverlay'
 import { HubNode, YouTubeNode, BlogNode, ProjectNode, MilestoneNode } from './shapes'
 import { SpaceshipCursor } from './SpaceshipCursor'
 import { useCameraState } from '@/hooks/useCameraState'
@@ -17,11 +16,25 @@ import { useSpaceshipPhysics } from '@/hooks/useSpaceshipPhysics'
 // import { useControlsVisibility } from '@/hooks/useControlsVisibility'
 import { useTimelineData } from '@/hooks/useTimelineData'
 import { useAboutData } from '@/hooks/useAboutData'
-import { useViewportTransform } from '@/hooks/useViewportTransform'
 import { calculateInitialZoom, getViewportDimensions } from '@/lib/cameraUtils'
 import { positionTimelineNodes, HUB_POSITION } from '@/lib/positionNodes'
 import { ZOOM_MIN, ZOOM_MAX } from '@/types/camera'
 import type { ContentNode } from '@/types/content'
+
+// Timeline visual constants
+const AXIS_COLOR = '#E0AFFFFF'
+const CONNECTOR_COLOR = '#12121212'
+const HUB_HALF_WIDTH = 440  // Half of 880px hub width
+const NODE_HALF_HEIGHT = 100 // Half of 200px node height
+const AXIS_LEFT_EXTENT = -10000
+// Zoom threshold at which date labels fade in (0 = hidden, 1 = fully visible)
+const DATE_LABEL_ZOOM_START = 0.7
+const DATE_LABEL_ZOOM_END = 0.9
+
+function formatNodeDate(iso: string): string {
+  const d = new Date(iso)
+  return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })
+}
 
 // Node component mapping
 const nodeComponents: Record<string, React.ComponentType<any>> = {
@@ -35,6 +48,7 @@ export function Canvas() {
   const [isReady, setIsReady] = useState(false)
   const stageRef = useRef<Konva.Stage | null>(null)
   const [modalNode, setModalNode] = useState<ContentNode | null>(null)
+  const [zoom, setZoom] = useState(1)
   
   // Data fetching hooks
   const { data: timelineData, isLoading: timelineLoading } = useTimelineData()
@@ -45,9 +59,6 @@ export function Canvas() {
     if (!timelineData) return []
     return positionTimelineNodes(timelineData.nodes)
   }, [timelineData])
-  
-  // Get viewport transform for SVG overlay
-  const viewportTransform = useViewportTransform(stageRef.current)
   
   // Game mode state and physics
   const { isGameMode } = useGameMode()
@@ -82,7 +93,8 @@ export function Canvas() {
       x: pointer.x - mousePointTo.x * clampedScale,
       y: pointer.y - mousePointTo.y * clampedScale,
     })
-    
+    setZoom(clampedScale)
+
     // Trigger custom zoom event for viewport transform hook
     stage.fire('zoom')
   }, [])
@@ -126,7 +138,7 @@ export function Canvas() {
     const stage = stageRef.current
     if (!stage) return
     const viewport = getViewportDimensions()
-    const zoom = calculateInitialZoom(viewport)
+    const initialZoom = calculateInitialZoom(viewport)
 
     // Center camera on hub (which is at world position 0, 0)
     // Konva position is the offset, so to center:
@@ -134,9 +146,10 @@ export function Canvas() {
       x: viewport.width / 2,
       y: viewport.height / 2,
     })
-    stage.scale({ x: zoom, y: zoom })
+    stage.scale({ x: initialZoom, y: initialZoom })
+    setZoom(initialZoom)
     stage.batchDraw()
-  }, [])
+  }, [setZoom])
   
   // Update loading condition to include data loading
   const isFullyLoaded = isReady && !timelineLoading && !aboutLoading
@@ -180,19 +193,74 @@ export function Canvas() {
           onDragEnd={handleDragEnd}
         >
           <Layer>
+            {/* Timeline axis — horizontal line at y=0, extends left from hub */}
+            <Line
+              points={[AXIS_LEFT_EXTENT, 0, HUB_POSITION.x - HUB_HALF_WIDTH, 0]}
+              stroke={AXIS_COLOR}
+              strokeWidth={1}
+              strokeScaleEnabled={false}
+              shadowBlur={12}
+              shadowColor={AXIS_COLOR}
+            />
+
+            {/* Connector lines + axis dots + date labels */}
+            {positionedNodes.map(({ node, x, y }) => {
+              const edgeY = y > 0 ? y - NODE_HALF_HEIGHT : y + NODE_HALF_HEIGHT
+              const labelOpacity = Math.max(0, Math.min(1,
+                (zoom - DATE_LABEL_ZOOM_START) / (DATE_LABEL_ZOOM_END - DATE_LABEL_ZOOM_START)
+              ))
+              const fontSize = 10 / zoom
+              // Place label below axis for nodes above, above axis for nodes below
+              const labelX = x + 24 / zoom;
+              const labelY = y >= 0 ? 12 / zoom : -(12 / zoom) - fontSize
+              return (
+                <>
+                  <Line
+                    key={`connector-${node.id}`}
+                    points={[x, edgeY, x, 0]}
+                    stroke={CONNECTOR_COLOR}
+                    strokeWidth={1}
+                    strokeScaleEnabled={false}
+                  />
+                  <Circle
+                    key={`dot-${node.id}`}
+                    x={x}
+                    y={0}
+                    radius={2}
+                    fill={AXIS_COLOR}
+                    strokeScaleEnabled={false}
+                  />
+                  <Text
+                    key={`label-${node.id}`}
+                    x={labelX}
+                    y={labelY}
+                    text={formatNodeDate(node.date)}
+                    fontSize={fontSize}
+                    fontFamily="'Inter', sans-serif"
+                    fill={AXIS_COLOR}
+                    opacity={labelOpacity}
+                    offsetX={fontSize * 1.8} // approximate half-width centering
+                    listening={false}
+                  />
+                </>
+              )
+            })}
+
             {/* Hub node */}
             {aboutData && (
               <HubNode
-                x={HUB_POSITION.x - 320}
-                y={HUB_POSITION.y - 180}
+                x={HUB_POSITION.x - 440}
+                y={HUB_POSITION.y - 240}
                 name={aboutData.name}
                 title={aboutData.title}
                 bio={aboutData.bio}
                 avatar={aboutData.avatar}
+                email={aboutData.email}
+                lastUpdated={timelineData?.lastUpdated}
                 social={aboutData.social}
               />
             )}
-            
+
             {/* Timeline nodes */}
             {positionedNodes.map(({ node, x, y }) => {
               const NodeComponent = nodeComponents[node.type]
@@ -222,14 +290,6 @@ export function Canvas() {
       
       {/* Fog overlay (above canvas, below controls) */}
       {/* <CanvasFogOverlay /> */}
-      {/* Timeline overlay */}
-      {isFullyLoaded && positionedNodes.length > 0 && (
-        <TimelineOverlay 
-          nodes={positionedNodes}
-          hubX={HUB_POSITION.x}
-          viewportTransform={viewportTransform}
-        />
-      )}
       {/* Controls with contextual visibility - TEMPORARILY DISABLED */}
       {/* {isFullyLoaded && <CanvasControls editor={stageRef.current} visible={visible} />} */}
       {/* Milestone modal */}
