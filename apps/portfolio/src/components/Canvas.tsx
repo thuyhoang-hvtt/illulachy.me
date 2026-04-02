@@ -239,14 +239,14 @@ export function Canvas() {
       {/* Antigravity background — purely decorative */}
       <div className="fixed inset-0">
         <Antigravity
-          count={200}
+          count={400}
           color="#E0AFFF"
           particleSize={0.6}
           magnetRadius={8}
           ringRadius={12}
-          waveSpeed={0.4}
+          waveSpeed={1}
           waveAmplitude={0.8}
-          fieldStrength={12}
+          fieldStrength={24}
           autoAnimate
         />
       </div>
@@ -370,11 +370,11 @@ export function Canvas() {
       {/* Controls with contextual visibility - TEMPORARILY DISABLED */}
       {/* {isFullyLoaded && <CanvasControls editor={stageRef.current} visible={visible} />} */}
       {/* Milestone modal */}
-      <MilestoneModal 
+      {/* <MilestoneModal 
         node={modalNode}
         open={modalNode !== null}
         onOpenChange={(open) => { if (!open) setModalNode(null) }}
-      />
+      /> */}
     </>
   )
 }
