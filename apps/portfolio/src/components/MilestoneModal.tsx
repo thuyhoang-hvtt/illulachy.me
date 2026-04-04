@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/Dialog'
 import { cn } from '@/lib/utils'
 import type { ContentNode } from '@/types/content'
 

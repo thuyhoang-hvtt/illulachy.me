@@ -1,6 +1,7 @@
 import { Group } from 'react-konva'
 import { Html } from 'react-konva-utils'
 import { useState } from 'react'
+import { AsciiArt } from '@/components/AsciiArt'
 
 interface HubNodeProps {
   x: number
@@ -63,7 +64,7 @@ export function HubNode({ x, y, name, title, bio, avatar, email, lastUpdated, so
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'row',
-            transform: isHovered ? 'scale(1.01)' : 'scale(1)',
+            // transform: isHovered ? 'scale(1.01)' : 'scale(1)',
             transition: 'all var(--motion-hover)',
           }}
           onPointerEnter={() => setIsHovered(true)}
@@ -80,20 +81,51 @@ export function HubNode({ x, y, name, title, bio, avatar, email, lastUpdated, so
             }}
           >
             {avatar ? (
-              <img
-                src={avatar}
-                alt={name}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: 'center top',
-                  display: 'block',
-                }}
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none'
-                }}
-              />
+              <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                {/* ASCII dots layer — visible by default, fades out on hover */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    opacity: isHovered ? 0 : 1,
+                    transition: 'opacity var(--motion-hover)',
+                    zIndex: 1,
+                  }}
+                >
+                  <AsciiArt
+                    src={avatar}
+                    resolution={100}
+                    charset="braille"
+                    color="var( --text-primary)"
+                    backgroundColor="var(--surface-default)"
+                    inverted
+                    animated
+                    animateOnView={false}
+                    animationStyle="flicker"
+                    objectFit="fill"
+                    paused={isHovered}
+                    className="w-full h-full"
+                  />
+                </div>
+                {/* Real photo layer — fades in on hover */}
+                <img
+                  src={avatar}
+                  alt={name}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center top',
+                    display: 'block',
+                    opacity: isHovered ? 1 : 0,
+                    transition: 'opacity var(--motion-avatar)',
+                    zIndex: 2,
+                  }}
+                  onError={(e) => { e.currentTarget.style.display = 'none' }}
+                />
+              </div>
             ) : (
               /* Placeholder gradient when no avatar */
               <div

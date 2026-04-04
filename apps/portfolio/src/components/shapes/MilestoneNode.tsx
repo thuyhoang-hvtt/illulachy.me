@@ -24,15 +24,6 @@ interface MilestoneNodeProps {
 export function MilestoneNode({ x, y, id, title, date, institution, isActive }: MilestoneNodeProps) {
   const [isHovered, setIsHovered] = useState(false)
   
-  const handleClick = () => {
-    // Dispatch custom event for modal display
-    window.dispatchEvent(new CustomEvent('openMilestoneModal', { 
-      detail: { 
-        nodeId: id,
-      } 
-    }))
-  }
-  
   // Format date nicely
   const formattedDate = new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -71,7 +62,6 @@ export function MilestoneNode({ x, y, id, title, date, institution, isActive }: 
           }}
           onPointerEnter={() => setIsHovered(true)}
           onPointerLeave={() => setIsHovered(false)}
-          onClick={handleClick}
         >
           {/* Achievement badge icon */}
           <div style={{
