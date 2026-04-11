@@ -19,12 +19,13 @@ const frontmatterSchema = z.object({
   type: z.string(), // Free-form, not enum
   title: z.string(),
   date: z.string(),
-  url: z.string().url().optional(),
+  url: z.string().optional(),
   thumbnail: z.string().optional(),
   draft: z.boolean().optional().default(false),
   institution: z.string().optional(),
   tech: z.string().optional(),
   description: z.string().optional(),
+  icon: z.string().optional(),
 });
 
 type Frontmatter = z.infer<typeof frontmatterSchema>;
@@ -96,6 +97,7 @@ export function parseContentFile(
   if (data.description) node.description = data.description;
   if (data.institution) node.institution = data.institution;
   if (data.tech) node.tech = data.tech;
+  if (data.icon) node.icon = data.icon;
 
   return node;
 }

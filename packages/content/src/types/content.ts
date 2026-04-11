@@ -13,6 +13,7 @@ export interface ContentNode {
   // Type-specific optional fields
   institution?: string  // for milestone entries
   tech?: string         // for project entries
+  icon?: string         // optional emoji icon
 }
 
 export interface TimelineData {

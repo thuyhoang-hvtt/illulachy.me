@@ -4,37 +4,39 @@
       "id": "started-university",
       "type": "milestone",
       "title": "Started University",
-      "date": "2017-08-01T00:00:00.000Z",
+      "date": "2017-08-15T00:00:00.000Z",
       "description": "Began university studies and took the first step into the programming world",
-      "institution": "University"
-    },
-    {
-      "id": "ambient-space",
-      "type": "project",
-      "title": "Ambient Space — Mix Ambient Sounds for Focus & Productivity",
-      "date": "2018-04-01T00:00:00.000Z",
-      "url": "https://github.com/thuyhoang-hvtt/ambient-space",
-      "thumbnail": "/ambientspace/og.png",
-      "description": "A web application that lets users mix ambient sounds like fire, stream, wind, and forest to create the perfect focus environment and boost productivity",
-      "tech": "ReactJS"
+      "institution": "University",
+      "icon": "🎓"
     },
     {
       "id": "gps-tracking",
       "type": "project",
       "title": "GPS Tracking — Real-Time IoT Location System",
-      "date": "2019-06-01T00:00:00.000Z",
+      "date": "2018-06-01T00:00:00.000Z",
       "url": "https://github.com/thuyhoang-hvtt/gps-tracking",
       "description": "A real-time GPS tracking system using MQTT protocol for IoT devices, enabling live location monitoring",
       "tech": "Flutter, MQTT, IoT"
     },
     {
+      "id": "ambient-space",
+      "type": "project",
+      "title": "Ambient Space — Mix Ambient Sounds for Focus & Productivity",
+      "date": "2019-04-01T00:00:00.000Z",
+      "url": "/ambientspace",
+      "thumbnail": "/ambientspace/og.png",
+      "description": "A web application that lets users mix ambient sounds like fire, stream, wind, and forest to create the perfect focus environment and boost productivity",
+      "tech": "ReactJS"
+    },
+    {
       "id": "first-ai-engineer-job",
       "type": "milestone",
       "title": "First AI Engineer Job",
-      "date": "2020-03-01T00:00:00.000Z",
+      "date": "2020-03-10T00:00:00.000Z",
       "description": "Built CNN models for defect detection on chip boards using PyTorch and TensorFlow",
       "institution": "AI Tech Company",
-      "tech": "PyTorch, TensorFlow, CNN"
+      "tech": "PyTorch, TensorFlow, CNN",
+      "icon": "💼"
     },
     {
       "id": "joined-kms-technology",
@@ -42,14 +44,15 @@
       "title": "Joined KMS Technology",
       "date": "2020-12-01T00:00:00.000Z",
       "description": "Started as Software Engineer at KMS Technology",
-      "institution": "KMS Technology"
+      "institution": "KMS Technology",
+      "icon": "🧑🏻‍💻"
     },
     {
       "id": "toolazy-to-read",
       "type": "project",
       "title": "TLTR; — Turn Any Web Novel Into an Audiobook in Seconds",
       "date": "2021-01-01T00:00:00.000Z",
-      "url": "https://github.com/illulachy/toolazy-to-read",
+      "url": "/tltr",
       "thumbnail": "/tltr/og.png",
       "description": "Realtime text-to-speech app that converts popular web novel sites into audiobooks, so you can listen instead of read",
       "tech": "ElectronJS, Text-to-Speech API"
@@ -67,11 +70,21 @@
       "type": "project",
       "title": "dotWord — Daily Word & Wisdom in Your Pocket",
       "date": "2022-09-01T00:00:00.000Z",
-      "url": "https://github.com/illulachy/dotword",
+      "url": "/dotword",
       "thumbnail": "./dotword/og.png",
       "description": "A mobile app that teaches you a new word every day with inspirational quotes, making vocabulary building a daily habit",
       "tech": "React Native"
+    },
+    {
+      "id": "voi",
+      "type": "project",
+      "title": "Voi: The Living Vocabulary Network",
+      "date": "2026-04-01T00:00:00.000Z",
+      "url": "/voi",
+      "thumbnail": "/voi/og.png",
+      "description": "Turn the world into your classroom. Voi uses AI to bridge the gap between rote memorization and fluent intuition, mapping real-world captures into a 7-layered interactive knowledge graph for permanent language acquisition.",
+      "tech": "AI, Knowledge Mapping, Computer Vision, OCR, Generative AI, NLP"
     }
   ],
-  "lastUpdated": "2026-04-07T15:04:08+07:00"
+  "lastUpdated": "2026-04-09T16:32:14+07:00"
 }
