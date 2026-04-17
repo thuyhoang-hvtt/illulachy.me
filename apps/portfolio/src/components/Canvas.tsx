@@ -26,6 +26,7 @@ import { calculateInitialZoom, getViewportDimensions } from "@/lib/cameraUtils";
 import { positionTimelineNodes, HUB_POSITION } from "@/lib/positionNodes";
 import { getYearPositions } from "@/lib/dateUtils";
 import { ZOOM_MIN, ZOOM_MAX } from "@/types/camera";
+import type { ContentNode } from "@/types/content";
 
 // Timeline visual constants
 const AXIS_COLOR = "#E0AFFFFF";
@@ -196,8 +197,6 @@ export function Canvas() {
       requestAnimationFrame(() => setIsReady(true));
     });
   }, []);
-
-
 
   // Initialize stage on mount
   useEffect(() => {
@@ -443,7 +442,6 @@ export function Canvas() {
       {/* <CanvasFogOverlay /> */}
       {/* Controls with contextual visibility - TEMPORARILY DISABLED */}
       {/* {isFullyLoaded && <CanvasControls editor={stageRef.current} visible={visible} />} */}
-
     </>
   );
 }
