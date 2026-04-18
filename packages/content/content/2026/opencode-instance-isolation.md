@@ -2,7 +2,7 @@
 type: blog
 title: "One Server, Five Projects — Per-Directory Isolation Without Separate Processes"
 date: April 17, 2026
-url: "/opencode-instance-isolation"
+url: "/blog/opencode-instance-isolation"
 description: How opencode achieves per-directory state isolation for sessions, config, LSP, and MCP connections inside a single server process using scoped caching.
 tags: ["opencode", "architecture", "typescript", "state-management"]
 category: Engineering
@@ -48,22 +48,24 @@ The pattern, in pseudocode:
 
 ```typescript
 // Inside a service layer
-const state = yield* InstanceState.make(
-  Effect.fn("Bus.state")(function* (ctx) {
-    // ctx.directory is the project root
-    // This runs exactly once per directory, lazily on first access
-    const pubsub = yield* PubSub.unbounded()
-    yield* Effect.addFinalizer(() => PubSub.shutdown(pubsub))
-    return { pubsub, subscribers: new Map() }
-  })
-)
+const state =
+  yield *
+  InstanceState.make(
+    Effect.fn("Bus.state")(function* (ctx) {
+      // ctx.directory is the project root
+      // This runs exactly once per directory, lazily on first access
+      const pubsub = yield* PubSub.unbounded();
+      yield* Effect.addFinalizer(() => PubSub.shutdown(pubsub));
+      return { pubsub, subscribers: new Map() };
+    }),
+  );
 
 // Inside a service method
 const get = Effect.fn("Bus.get")(function* () {
-  const s = yield* InstanceState.get(state)
+  const s = yield* InstanceState.get(state);
   // s is the BusState for the CURRENT directory — resolved implicitly
-  return s.pubsub
-})
+  return s.pubsub;
+});
 ```
 
 `InstanceState.get(state)` resolves to the cached state for whatever directory the current Effect fiber is running in. The directory is not passed explicitly — it's threaded through context automatically.
@@ -101,17 +103,20 @@ Node.js native addons (file watchers, PTY, tree-sitter parsers) fire callbacks o
 
 ```typescript
 // When registering a file watcher
-const watcher = await subscribe(directory, Instance.bind((events) => {
-  // Instance.bind captures the current ALS context at bind time
-  // When this callback fires (in a native thread), ALS is restored
-  // so Instance.current works correctly
-  AppRuntime.runPromise(
-    Effect.gen(function* () {
-      const bus = yield* Bus.Service
-      yield* bus.publish(File.Event.Changed, { events })
-    })
-  )
-}))
+const watcher = await subscribe(
+  directory,
+  Instance.bind((events) => {
+    // Instance.bind captures the current ALS context at bind time
+    // When this callback fires (in a native thread), ALS is restored
+    // so Instance.current works correctly
+    AppRuntime.runPromise(
+      Effect.gen(function* () {
+        const bus = yield* Bus.Service;
+        yield* bus.publish(File.Event.Changed, { events });
+      }),
+    );
+  }),
+);
 ```
 
 `Instance.bind(fn)` captures the current ALS context at the moment of binding. When the native callback fires — potentially on a different thread, definitely outside any async chain — the bound function restores ALS before calling `fn`. This means `Instance.current` works correctly inside the callback, which means `InstanceState.get` resolves to the right directory.
@@ -143,9 +148,9 @@ The key: when `InstanceState.make` is called during service initialization, it r
 
 ```typescript
 const off = registerDisposer((directory) =>
-  Effect.runPromise(ScopedCache.invalidate(cache, directory))
-)
-yield* Effect.addFinalizer(() => Effect.sync(off))
+  Effect.runPromise(ScopedCache.invalidate(cache, directory)),
+);
+yield * Effect.addFinalizer(() => Effect.sync(off));
 ```
 
 When the instance is disposed, the registry calls every registered disposer with the directory. `ScopedCache.invalidate` triggers the finalizers that were set up inside `InstanceState.make` — shutting down PubSubs, closing file watchers, terminating LSP servers, etc.
@@ -158,17 +163,17 @@ No service needs to know about the disposal lifecycle explicitly. The `Effect.ad
 
 Not everything is per-directory. Some services are truly global:
 
-| Service | Scope | Why |
-|---------|-------|-----|
-| `Auth` | Global | API keys are per-user, not per-project |
-| `AppFileSystem` | Global | Stateless wrapper — no per-directory state |
-| `Installation` | Global | Version/channel is process-wide |
-| `Bus` | Instance | Each project has its own pub/sub backbone |
-| `Config` | Instance | Each project has its own `opencode.json` |
-| `Session` | Instance | Sessions are per-project |
-| `LSP` | Instance | Each project runs its own language server |
-| `MCP` | Instance | MCP connections are per-project |
-| `Provider` | Instance | Model selection can vary by project config |
+| Service         | Scope    | Why                                        |
+| --------------- | -------- | ------------------------------------------ |
+| `Auth`          | Global   | API keys are per-user, not per-project     |
+| `AppFileSystem` | Global   | Stateless wrapper — no per-directory state |
+| `Installation`  | Global   | Version/channel is process-wide            |
+| `Bus`           | Instance | Each project has its own pub/sub backbone  |
+| `Config`        | Instance | Each project has its own `opencode.json`   |
+| `Session`       | Instance | Sessions are per-project                   |
+| `LSP`           | Instance | Each project runs its own language server  |
+| `MCP`           | Instance | MCP connections are per-project            |
+| `Provider`      | Instance | Model selection can vary by project config |
 
 Global services use `makeRuntime(Service, layer)` from `src/effect/run-service.ts` — a lazy singleton that constructs one runtime on first use and shares it globally.
 
@@ -179,7 +184,7 @@ Global services use `makeRuntime(Service, layer)` from `src/effect/run-service.t
 The elegance is in what developers don't have to do. A service author writes:
 
 ```typescript
-const s = yield* InstanceState.get(state)
+const s = yield * InstanceState.get(state);
 ```
 
 They don't pass `directory`. They don't look up a `Map<string, State>`. They don't worry about initialization races. The `ScopedCache` handles deduplication (if two concurrent requests trigger `get` for the same directory, `init` runs once), and Effect's structured concurrency handles cleanup.

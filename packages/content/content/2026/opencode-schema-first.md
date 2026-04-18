@@ -2,7 +2,7 @@
 type: blog
 title: "One Schema, Three Targets — How opencode Eliminates Parallel Type Definitions"
 date: April 17, 2026
-url: "/opencode-schema-first"
+url: "/blog/opencode-schema-first"
 description: How opencode writes one schema and derives TypeScript types, Zod validators, and OpenAPI documentation from it — eliminating drift across 19 tools and 50+ services.
 tags: ["opencode", "typescript", "zod", "openapi", "schema"]
 category: Engineering
@@ -41,16 +41,17 @@ opencode uses Effect Schema as the single source of truth. Effect Schema produce
 // src/session/session.ts — simplified
 
 export class Info extends Schema.Class<Info>("Session.Info")({
-  id: SessionID,           // branded type
+  id: SessionID, // branded type
   title: Schema.String,
   createdAt: Schema.Number,
   status: Schema.Literal("idle", "busy", "error"),
 }) {
-  static readonly zod = zod(Info)  // derived — not hand-written
+  static readonly zod = zod(Info); // derived — not hand-written
 }
 ```
 
 From this one definition:
+
 - `Info` is the TypeScript type (inferred by the compiler)
 - `Schema.decodeUnknown(Info)` validates and parses incoming data at runtime
 - `Info.zod` is a Zod schema — derived automatically from the Effect Schema AST
@@ -66,11 +67,11 @@ opencode uses `Schema.brand` to create nominal types:
 
 ```typescript
 // src/session/schema.ts
-export const SessionID = Schema.String.pipe(Schema.brand("SessionID"))
-export type SessionID = typeof SessionID.Type  // string & Brand<"SessionID">
+export const SessionID = Schema.String.pipe(Schema.brand("SessionID"));
+export type SessionID = typeof SessionID.Type; // string & Brand<"SessionID">
 
-export const MessageID = Schema.String.pipe(Schema.brand("MessageID"))
-export type MessageID = typeof MessageID.Type  // string & Brand<"MessageID">
+export const MessageID = Schema.String.pipe(Schema.brand("MessageID"));
+export type MessageID = typeof MessageID.Type; // string & Brand<"MessageID">
 ```
 
 Now `SessionID` and `MessageID` are structurally incompatible. Passing a `MessageID` where a `SessionID` is expected is a compile error. This eliminates an entire class of "wrong ID type" bugs — the kind that only surface at runtime when the database returns no results.
@@ -120,18 +121,19 @@ The `ZodOverride` annotation gives escape hatches: branded ID schemas annotate t
 The `withStatics` utility in `src/util/schema.ts` attaches static methods to an Effect Schema object:
 
 ```typescript
-export const SessionID = Schema.String
-  .annotate({ [ZodOverride]: Identifier.schema("session") })
-  .pipe(
-    Schema.brand("SessionID"),
-    withStatics((s) => ({
-      descending: (id?: string) => s.make(Identifier.descending("session", id)),
-      zod: Identifier.schema("session").pipe(z.custom<typeof s.Type>()),
-    })),
-  )
+export const SessionID = Schema.String.annotate({
+  [ZodOverride]: Identifier.schema("session"),
+}).pipe(
+  Schema.brand("SessionID"),
+  withStatics((s) => ({
+    descending: (id?: string) => s.make(Identifier.descending("session", id)),
+    zod: Identifier.schema("session").pipe(z.custom<typeof s.Type>()),
+  })),
+);
 ```
 
 Now `SessionID` is both an Effect Schema and an object with:
+
 - `SessionID.make("01J...")` — constructs a branded ID (runtime validation)
 - `SessionID.descending(id?)` — generates a new descending ULID for ordered insertion
 - `SessionID.zod` — the Zod schema for HTTP route params
@@ -152,11 +154,12 @@ export class NotFoundError extends Schema.TaggedErrorClass<NotFoundError>()(
 ) {}
 
 // Usage inside an Effect
-yield* new Session.NotFoundError({ id })
+yield * new Session.NotFoundError({ id });
 // ^ same as: yield* Effect.fail(new Session.NotFoundError({ id }))
 ```
 
 These errors:
+
 - Are TypeScript types — the compiler tracks which errors each Effect can produce
 - Carry structured data (`id`) — not just a message string
 - Serialize cleanly to JSON via `.toObject()` — `{ name: "SessionNotFoundError", message: "...", properties: { id: "01J..." } }`

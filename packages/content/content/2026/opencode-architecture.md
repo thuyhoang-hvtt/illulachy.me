@@ -2,7 +2,7 @@
 type: blog
 title: "The Architecture of a TUI AI Coding Agent"
 date: April 17, 2026
-url: "/opencode-architecture"
+url: "/blog/opencode-architecture"
 description: How opencode ships as a single binary running two cooperating processes — a local HTTP server and a terminal UI client — and why that separation shapes everything else.
 tags: ["opencode", "architecture", "typescript", "ai"]
 category: Engineering
@@ -24,14 +24,14 @@ It is fully open-source, self-hosted (models run through your own API keys), and
 
 The codebase is a Bun workspace with these primary packages:
 
-| Package | Role |
-|---------|------|
-| `packages/opencode` | Core server, TUI client, and CLI — the main package |
-| `packages/sdk` | JavaScript SDK for building clients against the server |
-| `packages/plugin` | Plugin system SDK (`@opencode-ai/plugin`) |
-| `packages/console` | Admin web console (Solid.js) for opencode.ai |
-| `packages/desktop` | Native desktop app wrapper |
-| `packages/shared` | Shared utilities (FileSystem, npm helpers) |
+| Package             | Role                                                   |
+| ------------------- | ------------------------------------------------------ |
+| `packages/opencode` | Core server, TUI client, and CLI — the main package    |
+| `packages/sdk`      | JavaScript SDK for building clients against the server |
+| `packages/plugin`   | Plugin system SDK (`@opencode-ai/plugin`)              |
+| `packages/console`  | Admin web console (Solid.js) for opencode.ai           |
+| `packages/desktop`  | Native desktop app wrapper                             |
+| `packages/shared`   | Shared utilities (FileSystem, npm helpers)             |
 
 Everything interesting lives in `packages/opencode`.
 
@@ -52,6 +52,7 @@ When you run `opencode`, it starts a local HTTP server on a random port, then la
 ```
 
 Why? Several reasons:
+
 - The same server can power the TUI, a desktop app (Tauri/Electron), or a remote browser client
 - You can run the server headless on a remote machine and connect the TUI from your laptop
 - Multiple clients can observe the same session simultaneously
@@ -60,14 +61,14 @@ Why? Several reasons:
 
 ## Tech Stack
 
-| Layer | Technology | Why |
-|-------|------------|-----|
-| TUI rendering | OpenTUI + SolidJS | Fine-grained reactivity without VDOM; handles 60 FPS terminal updates efficiently |
-| HTTP server | Hono | Fast, lightweight, excellent TypeScript support |
-| Async/services | Effect (v4) | Composable async, typed errors, structured concurrency |
-| Database | SQLite + Drizzle ORM | Embedded, zero-config, works offline |
-| AI integration | Vercel AI SDK | Unified interface over 20+ model providers |
-| Runtime | Bun (primary) / Node.js | Bun for speed; Node.js adapter for compatibility |
+| Layer          | Technology              | Why                                                                               |
+| -------------- | ----------------------- | --------------------------------------------------------------------------------- |
+| TUI rendering  | OpenTUI + SolidJS       | Fine-grained reactivity without VDOM; handles 60 FPS terminal updates efficiently |
+| HTTP server    | Hono                    | Fast, lightweight, excellent TypeScript support                                   |
+| Async/services | Effect (v4)             | Composable async, typed errors, structured concurrency                            |
+| Database       | SQLite + Drizzle ORM    | Embedded, zero-config, works offline                                              |
+| AI integration | Vercel AI SDK           | Unified interface over 20+ model providers                                        |
+| Runtime        | Bun (primary) / Node.js | Bun for speed; Node.js adapter for compatibility                                  |
 
 ---
 

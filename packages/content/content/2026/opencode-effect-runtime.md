@@ -2,7 +2,7 @@
 type: blog
 title: "Effect as Infrastructure — How opencode Wires 50+ Services Without a Framework"
 date: April 17, 2026
-url: "/opencode-effect-runtime"
+url: "/blog/opencode-effect-runtime"
 description: How opencode uses Effect's layer system instead of a DI framework to wire 50+ services with compile-time type-checking, runtime deduplication, and zero configuration.
 tags: ["opencode", "effect", "typescript", "dependency-injection"]
 category: Engineering
@@ -67,7 +67,7 @@ If `SessionPrompt` and `LLM` both depend on `Config`, and `AppLayer` lists them 
 No. The `memoMap` handles this:
 
 ```typescript
-memoMap = Layer.makeMemoMapUnsafe()
+memoMap = Layer.makeMemoMapUnsafe();
 // Shared across all runtimes in the process
 // When Config.defaultLayer is encountered a second time,
 // the memoMap returns the already-constructed instance
@@ -85,38 +85,39 @@ Every service in opencode follows this exact pattern (from `CLAUDE.md`):
 // src/foo/foo.ts
 
 export interface Interface {
-  readonly get: (id: FooID) => Effect.Effect<Foo, NotFoundError>
-  readonly create: (input: CreateInput) => Effect.Effect<Foo>
+  readonly get: (id: FooID) => Effect.Effect<Foo, NotFoundError>;
+  readonly create: (input: CreateInput) => Effect.Effect<Foo>;
 }
 
-export class Service
-  extends Context.Service<Service, Interface>()("@opencode/Foo") {}
+export class Service extends Context.Service<Service, Interface>()(
+  "@opencode/Foo",
+) {}
 
 export const layer: Layer.Layer<Service, never, Config.Service | Bus.Service> =
   Layer.effect(
     Service,
     Effect.gen(function* () {
-      const config = yield* Config.Service
-      const bus = yield* Bus.Service
+      const config = yield* Config.Service;
+      const bus = yield* Bus.Service;
 
       const get = Effect.fn("Foo.get")(function* (id) {
         // ...implementation
-      })
+      });
 
       const create = Effect.fn("Foo.create")(function* (input) {
         // ...implementation
-      })
+      });
 
-      return Service.of({ get, create })
+      return Service.of({ get, create });
     }),
-  )
+  );
 
 export const defaultLayer = layer.pipe(
   Layer.provide(Config.defaultLayer),
   Layer.provide(Bus.defaultLayer),
-)
+);
 
-export * as Foo from "./foo"
+export * as Foo from "./foo";
 ```
 
 Three things worth noting:
@@ -136,27 +137,27 @@ Route handlers don't construct services. They yield them from the already-runnin
 ```typescript
 // Route handler — src/server/instance/session.ts
 async (c) => {
-  const sessionID = c.req.valid("param").sessionID
-  const body = c.req.valid("json")
+  const sessionID = c.req.valid("param").sessionID;
+  const body = c.req.valid("json");
 
   const result = await AppRuntime.runPromise(
     Effect.gen(function* () {
-      const session = yield* Session.Service
-      const prompt = yield* SessionPrompt.Service
+      const session = yield* Session.Service;
+      const prompt = yield* SessionPrompt.Service;
       // both services are already built — just yield them
-      return yield* prompt.prompt({ sessionID, ...body })
-    })
-  )
+      return yield* prompt.prompt({ sessionID, ...body });
+    }),
+  );
 
-  return c.json(result)
-}
+  return c.json(result);
+};
 ```
 
 Compare this to the old facade pattern that's being removed:
 
 ```typescript
 // Old pattern (being removed) — creates a separate runtime per call
-const result = await SessionPrompt.prompt({ sessionID, ...body })
+const result = await SessionPrompt.prompt({ sessionID, ...body });
 // ^ This hides an async facade backed by makeRuntime()
 //   Two calls can end up with different runtime instances
 ```
