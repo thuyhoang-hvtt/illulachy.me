@@ -1,7 +1,7 @@
 ---
 type: blog
 title: "The Architecture of a TUI AI Coding Agent"
-date: April 17, 2026
+date: April 10, 2026
 url: "/blog/opencode-architecture"
 description: How opencode ships as a single binary running two cooperating processes — a local HTTP server and a terminal UI client — and why that separation shapes everything else.
 tags: ["opencode", "architecture", "typescript", "ai"]

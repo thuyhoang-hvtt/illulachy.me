@@ -31,3 +31,4 @@ dist-ssr
 
 # Astro generated
 .astro
+.vercel

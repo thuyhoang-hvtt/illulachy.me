@@ -1,7 +1,7 @@
 ---
 type: blog
 title: "The AI Engine — Agents, Memory, and the Prompt Loop"
-date: April 17, 2026
+date: April 09, 2026
 url: "/blog/opencode-ai-engine"
 description: How a single user message in opencode triggers agent selection, a multi-step tool loop, and transparent conversation compaction when history grows too long.
 tags: ["opencode", "ai", "agents", "typescript", "llm"]

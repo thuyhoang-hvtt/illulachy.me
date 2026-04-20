@@ -1,7 +1,7 @@
 ---
 type: blog
 title: "One Schema, Three Targets — How opencode Eliminates Parallel Type Definitions"
-date: April 17, 2026
+date: April 15, 2026
 url: "/blog/opencode-schema-first"
 description: How opencode writes one schema and derives TypeScript types, Zod validators, and OpenAPI documentation from it — eliminating drift across 19 tools and 50+ services.
 tags: ["opencode", "typescript", "zod", "openapi", "schema"]

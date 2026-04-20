@@ -1,7 +1,7 @@
 ---
 type: blog
 title: "One Server, Five Projects — Per-Directory Isolation Without Separate Processes"
-date: April 17, 2026
+date: April 13, 2026
 url: "/blog/opencode-instance-isolation"
 description: How opencode achieves per-directory state isolation for sessions, config, LSP, and MCP connections inside a single server process using scoped caching.
 tags: ["opencode", "architecture", "typescript", "state-management"]

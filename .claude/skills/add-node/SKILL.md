@@ -102,7 +102,7 @@ description: Video description
 type: blog
 title: Blog Post Title
 date: Month Day, Year
-url: https://...
+url: /blog/slug-here
 description: Brief description
 tags: ["tag1", "tag2"]
 category: Engineering/Reflections

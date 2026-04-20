@@ -1,7 +1,7 @@
 ---
 type: blog
 title: "Effect as Infrastructure — How opencode Wires 50+ Services Without a Framework"
-date: April 17, 2026
+date: April 11, 2026
 url: "/blog/opencode-effect-runtime"
 description: How opencode uses Effect's layer system instead of a DI framework to wire 50+ services with compile-time type-checking, runtime deduplication, and zero configuration.
 tags: ["opencode", "effect", "typescript", "dependency-injection"]
